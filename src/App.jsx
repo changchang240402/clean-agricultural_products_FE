@@ -8,13 +8,11 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="logo h-10 mr-2 flex font-bold justify-center w-full items-center text-[#387DE4] text-xl font-roboto">
+        {/* <img className="h-8 w-8" loading="lazy" src={logo} alt="" /> */}
+        <h1 className="transition duration-700 ease-in-out mt-4 text-2xl">
+          ds System
+        </h1>
       </div>
       <h1>Vite + React</h1>
       <div className="card">
