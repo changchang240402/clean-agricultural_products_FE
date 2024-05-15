@@ -62,7 +62,7 @@ const Register = () => {
                 <div className="container rounded-3xl m-10 shadow-xl bg-white w-2/3 ">
                     <div className="m-10">
                         <div className="flex justify-start my-5 items-start">
-                            <Logo size='50' />
+                            <Logo size='50' className='text-4xl' />
                         </div>
                         <div className="App">
                             {step === 1 && <RegistrationForm userData={userData} setUserData={setUserData} nextStep={nextStep} />}

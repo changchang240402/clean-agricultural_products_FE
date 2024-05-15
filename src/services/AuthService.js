@@ -3,6 +3,12 @@ import { Toastify } from "../toastify/Toastify";
 import api from "../utility/api";
 import { ROLE } from "../const/config"
 import * as yup from "yup";
+export const handleUnauthorized = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userName");
+    window.location.href = "/";
+};
 function AuthService() {
     const schema = yup.object().shape({
         name: yup.string()
@@ -114,10 +120,7 @@ function AuthService() {
         try {
             const response = await api.post("/auth/logout");
             if (response.status === 200) {
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("refreshToken");
-                localStorage.removeItem("userName");
-                navigate("/");
+                handleUnauthorized();
             }
         } catch (error) {
             if (error.response) {

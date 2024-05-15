@@ -10,3 +10,7 @@ export const ROLE = {
     seller: 2,
     trader: 3
 }
+export const SORT = {
+    asc: 'Thấp đến cao',
+    desc: 'Cao đến thấp'
+};

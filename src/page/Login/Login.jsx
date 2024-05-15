@@ -38,7 +38,7 @@ const Login = () => {
                 <div className="container rounded-3xl m-10 shadow-xl bg-white w-1/2 ">
                     <div className="m-10">
                         <div className="flex justify-start my-5 items-start">
-                            <Logo size='50' />
+                            <Logo size='50' className='text-5xl'/>
                         </div>
                         <form
                             className="form flex flex-col"

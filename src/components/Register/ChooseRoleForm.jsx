@@ -1,26 +1,15 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import AuthService from "../../services/AuthService";
-import { Link } from "react-router-dom";
-import { Component } from "../Components";
 import React, { useState, useEffect } from 'react';
-import { faArrowRotateLeft, faArrowRight, faArrowLeft, faShop, faBasketShopping, faTruckFast } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faArrowLeft, faShop, faBasketShopping, faTruckFast } from '@fortawesome/free-solid-svg-icons'
 import { ROLE } from "../../const/config";
-const schema = yup.object().shape({
-    role: yup.number()
-        .typeError('Giá trị không hợp lệ')
-        .required("Vui lòng chọn vai trò")
-        .min(1, 'Giá trị không hợp lệ')
-        .max(3, 'Giá trị không hợp lệ'),
-});
 
 const ChooseRoleForm = ({ handleRoleSelection, nextStep, prevStep }) => {
     const [selectedRole, setSelectedRole] = useState(null);
     const { handleSubmit } = useForm();
 
-    const handleFormSubmit = (data) => {
+    const handleFormSubmit = () => {
         if (selectedRole !== null) {
             handleRoleSelection(selectedRole);
             nextStep();

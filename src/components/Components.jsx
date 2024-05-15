@@ -1,6 +1,6 @@
 import '../index.css'
 import * as React from "react"
-
+import ReactPaginate from 'react-paginate';
 const Input = React.forwardRef(function Input(props, ref) {
     const { className, name, placeholder, register } = props;
     return (
@@ -47,5 +47,47 @@ const Component = React.forwardRef(function Component(props, ref) {
         </div>
     );
 });
-
-export { Label, Input, LabelError, Component};
+const Paginate = React.forwardRef(function Paginate(props, ref) {
+    const { className, handlePageClick, pageCount } = props;
+    return (
+        <div className={`flex items-center justify-end ${className}`}>
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel=" > "
+                onPageChange={handlePageClick}
+                Displayed Page Range={5}
+                pageCount={pageCount}
+                previousLabel=" < "
+                renderOnZeroPageCount={null}
+                containerClassName="pagination"
+                pageClassName="page-item"
+                activeClassName="active"
+                previousClassName="page-item"
+                nextClassName="page-item"
+                breakClassName="page-item"
+                className='flex items-center flex-row h-[50px]'
+            />
+        </div>
+    );
+});
+const Button = React.forwardRef(function Button(props, ref) {
+    const { name, title, value, onChange, title1, data, className1, className2 } = props;
+    return (
+        <button className={`flex items-center flex-row px-4 py-3 shadow-sm rounded-2xl border-2 focus:outline-none border-[#546869] h-auto ${className1}`}>
+            <p className="justify-center font-bold">{title} </p>
+            <select
+                className={`selectpicker focus:outline-none focus:border-none bg-white justify-center ${className2}`}
+                data-width="2px"
+                aria-label="None"
+                id={name}
+                name={name}
+                value={value}
+                onChange={onChange}
+            >
+                <option value=''>{title1}</option>
+                {data}
+            </select>
+        </button>
+    );
+});
+export { Label, Input, LabelError, Component, Paginate, Button };
