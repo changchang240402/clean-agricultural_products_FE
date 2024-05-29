@@ -54,7 +54,6 @@ const Register = () => {
             userData.payload,
             userData.status);
     };
-    console.log(userData);
 
     return (
         <div className="flex z-10">

@@ -1,18 +1,9 @@
-// import { FC } from "react";
-// import { Product } from "../models/Product";
-// import RatingStar from "./RatingStar";
-// import { addToCart } from "../redux/features/cartSlice";
-// import { useAppDispatch } from "../redux/hooks";
-// import toast from "react-hot-toast";
-// import { AiOutlineShoppingCart } from "react-icons/ai";
-// import { Link } from "react-router-dom";
-// import PriceSection from "./PriceSection";
-// import useAuth from "../hooks/useAuth";
+import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import { StarRating } from '../ratingstar'
-
+import { encodeId } from '../../utility/utils';
 const ProductCard = ({
-    id,
+    product_id,
     item_name,
     product_name,
     price_type,
@@ -38,9 +29,9 @@ const ProductCard = ({
         }
         return name;
     };
-
+    const encodedId = encodeId(product_id);
     return (
-        <div className="border border-gray-300 font-lato w-[300px] rounded-2xl" data-test="product-card">
+        <Link to={{ pathname: `/user/item/${encodedId}` }} className="border border-gray-300 font-lato w-[300px] rounded-2xl" data-test="product-card">
             <div className="text-center border-b border-gray-200">
                 <img src={image} alt="" className="inline-block h-60" />
             </div>
@@ -70,7 +61,7 @@ const ProductCard = ({
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

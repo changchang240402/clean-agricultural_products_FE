@@ -3,7 +3,8 @@ import raucu from '../../assets/vegetables.png'
 import traicay from '../../assets/traicay.png'
 import tpcn from '../../assets/caycongnghiep.png'
 import khac from '../../assets/khac.png'
-
+import { faHourglassHalf, faTruckFast, faCheck, faXmark, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const MenuProductType = [
     {
         id: 1,
@@ -102,7 +103,57 @@ const provinces = [
     "Yên Bái",
 ];
 
+const MenuStatusOrder = [
+    {
+        id: 1,
+        status: 2,
+        title: "Đang chuẩn bị",
+    },
+    {
+        id: 2,
+        status: 3,
+        title: "Đang vận chuyển",
+    },
+    {
+        id: 3,
+        status: 4,
+        title: "Hoàn thành",
+    },
+    {
+        id: 4,
+        status: 5,
+        title: "Trả hàng",
+    },
+    {
+        id: 5,
+        status: 6,
+        title: "Đã hủy",
+    },
+];
+
+const MenuOrder = [
+    {
+        id: 1,
+        title: "Tháng này",
+    },
+    {
+        id: 2,
+        title: "3 tháng qua",
+    },
+    {
+        id: 3,
+        title: "6 tháng qua",
+
+    },
+    {
+        id: 4,
+        title: "Năm nay",
+    },
+];
+
 export {
     MenuProductType,
     provinces,
+    MenuOrder,
+    MenuStatusOrder
 };

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faLocationDot, faFilterCircleXmark, faSeedling } from '@fortawesome/free-solid-svg-icons'
 import { Button, Paginate } from '../Components';
-import ProductCard from '../Product/ProductCard';
 import { provinces } from '../Product/MenuProductType';
 import userService from '../../services/UserService';
 import icon from '../../assets/shop.png'
-
-
+import { encodeId } from '../../utility/utils';
+import { Link } from "react-router-dom";
 const Shop = () => {
     const { shop } = userService();
     const [filter, setFilter] = useState({
@@ -105,7 +104,7 @@ const Shop = () => {
                             {shopData.length > 0 ? (
                                 <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2">
                                     {shopData.map(shop => (
-                                        <div key={shop.id}>
+                                        <Link to={{ pathname: `/user/shop/${encodeId(shop.id)}` }} key={shop.id}>
                                             <div className={`flex flex-row border-2 border-gray-300 mb-5 rounded-sm items-center px-2 pt-2 py-2 h-[100px]`}>
                                                 <div className="text-center border-gray-200 flex justify-end items-center">
                                                     <img className='rounded-3xl ml-5' loading="lazy" src={shop.avatar ? shop.avatar : icon} height={50} width={50} alt="" />
@@ -122,7 +121,7 @@ const Shop = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     ))}
                                 </div>
                             ) : (

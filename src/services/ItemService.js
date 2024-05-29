@@ -78,10 +78,58 @@ function itemService() {
             }
         }
     };
+    const itemDetail = {
+        async getItemData(id) {
+            try {
+                const response = await api.get(`/auth/item/${id}`);
+                if (response.status === 200) {
+                    return {
+                        item: response.data.item,
+                    };
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 500) {
+                        handleUnauthorized();
+                    }
+                    Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+                }
+            }
+        }
+    };
+    const itemShop = {
+        async getItemShopData(id) {
+            try {
+                const response = await api.get(`/user/itemShop/${id}`);
+                if (response.status === 200) {
+                    return {
+                        item: response.data.item,
+                    };
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        handleUnauthorized();
+                    }
+                    // Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+
+                    return {
+                        item: [],
+                    };
+                }
+            }
+        }
+    };
     return {
         topItem,
         newItem,
         itemToUser,
+        itemDetail,
+        itemShop
     };
 };
 

@@ -5,7 +5,7 @@ import * as React from "react";
 const Logo = React.forwardRef(function Logo(props, ref) {
     const { size, className } = props;
     return (
-        <div className="logo h-10 mr-2 flex font-bold justify-center w-full items-center text-[#72E9C0] text-xl font-roboto">
+        <div className="logo h-10 mr-2 flex font-bold justify-center w-full items-center text-[#65B599] text-xl font-roboto">
             <h1 style={{ fontFamily: 'Lobster, cursive' }} className={className}>
                 N
             </h1>

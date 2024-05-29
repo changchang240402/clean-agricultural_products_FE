@@ -36,8 +36,30 @@ function userService() {
             }
         }
     };
+    const shopDetail = {
+        async getShopData(id) {
+            try {
+                const response = await api.get(`/auth/shop/${id}`);
+                if (response.status === 200) {
+                    return {
+                        shop: response.data.shop,
+                    };
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 500) {
+                        handleUnauthorized();
+                    }
+                    Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+                }
+            }
+        }
+    };
     return {
         shop,
+        shopDetail
     };
 };
 
