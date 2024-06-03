@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faShop, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import OrderDetailCart from '../OrderDetail/OrderDetailCart';
 import orderDetailService from '../../services/OrderDetailService';
-import { Link } from 'react-router-dom';
-
+import VnPay from '../../services/VnPay';
+// import { useLocation, useNavigate } from 'react-router-dom';
+// import { Toastify } from "../../toastify/Toastify";
 const Cart = () => {
     const { getOrderByUser, deleteOrderByUser } = orderDetailService();
     const [orders, setOrders] = useState([]);
+    const { payment } = VnPay();
 
     const fetchData = async () => {
         try {
@@ -21,13 +23,30 @@ const Cart = () => {
     useEffect(() => {
         fetchData();
     }, []);
-
     const totalAmount = orders.reduce((acc, order) => {
         const price = parseFloat(order.total_price);
         const shipping = parseFloat(order.shipping_money);
         return acc + (price + shipping);
     }, 0);
-
+    const orderIds = orders.reduce((acc, order) => {
+        return acc + order.id;
+    }, 0);
+    const orderId = orders.map(order => order.id);
+    console.log('cb', orderId);
+    const handlePayment = async () => {
+        try {
+            await payment(orderIds, totalAmount);
+            // const query = new URLSearchParams(location.search);
+            // if (query.has('vnp_SecureHash')) {
+            //     const queryString = query.toString();
+            //     const data = await fetchVnPayReturn(queryString);
+            //     setResult(prevFilter => ({ ...prevFilter, detail: data.data }));
+            //     history.replace({ search: '' });
+            // }
+        } catch (error) {
+            console.error('Error during payment or fetching VNPay return:', error);
+        }
+    };
     const handleUpdate = (id, newQty) => {
         setOrders((prevOrders) =>
             prevOrders.map((order) => {
@@ -133,14 +152,13 @@ const Cart = () => {
                                             <dd className="text-lg font-bold text-gray-900 dark:text-white">{totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
                                         </dl>
                                     </div>
-                                    <Link
-                                        to="/user/payment"
+                                    <div
                                         //  className="text-xl font-bold text-[#546869]"
                                         //  data-test="main-products"
                                         style={{ fontFamily: 'Lobster, cursive' }}
                                     >
-                                        <button type="button" className="w-full bg-[#EE3731] text-white py-2 rounded-md">Thanh toán</button>
-                                    </Link>
+                                        <button onClick={handlePayment} type="button" className="w-full bg-[#EE3731] text-white py-2 rounded-md">Thanh toán</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

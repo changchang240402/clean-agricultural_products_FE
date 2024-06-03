@@ -21,7 +21,7 @@ const HistoryOrder = ({
                             <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-100 ring-8 ring-white dark:bg-green-900 dark:ring-gray-800">
                                 <FontAwesomeIcon icon={faCheck} color={'green'} className='w-[15px]' />
                             </span>
-                            <h4 className="mb-0.5 font-semibold">{formatDateHourString(received_date)}</h4>
+                            <h4 className="mb-0.5 font-semibold">{received_date}</h4>
                             <a className="text-sm font-medium hover:underline">Giao hàng thành công</a>
                         </li>
                     ) : (
@@ -29,7 +29,7 @@ const HistoryOrder = ({
                             <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-violet-100 ring-8 ring-white dark:bg-violet-900 dark:ring-gray-800">
                                 <FontAwesomeIcon icon={faRotateLeft} color={'#5907C0'} className='w-[15px]' />
                             </span>
-                            <h4 className="mb-0.5 font-semibold">{formatDateHourString(received_date)}</h4>
+                            <h4 className="mb-0.5 font-semibold">{received_date}</h4>
                             <a className="text-sm font-medium hover:underline">Hoàn trả lại đơn hàng</a>
                         </li>
                     )
@@ -39,7 +39,7 @@ const HistoryOrder = ({
                             <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-red-100 ring-8 ring-white dark:bg-red-900 dark:ring-gray-800">
                                 <FontAwesomeIcon icon={faXmark} color={'#CA1616'} className='w-[15px]' />
                             </span>
-                            <h4 className="mb-0.5 font-semibold">Đã hủy vào {formatDateHourString(order_cancellation_date)}</h4>
+                            <h4 className="mb-0.5 font-semibold">Đã hủy vào {order_cancellation_date}</h4>
                             <a className="text-sm font-medium hover:underline">Giao hàng</a>
                         </li>
                     ) : (
@@ -47,7 +47,7 @@ const HistoryOrder = ({
                             <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-900 dark:ring-gray-800">
                                 <FontAwesomeIcon icon={faHouse} color={'gray'} className='w-[15px]' />
                             </span>
-                            <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">Dự kiến {formatDateExpected(created_at, 5)}</h4>
+                            <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">Dự kiến {formatDateExpected(Date(), 3)}</h4>
                             <p className="text-sm font-normal text-gray-500 dark:text-gray-400">Giao hàng</p>
                         </li>
                     )
@@ -59,7 +59,7 @@ const HistoryOrder = ({
                         <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-100 ring-8 ring-white dark:bg-green-900 dark:ring-gray-800">
                             <FontAwesomeIcon icon={faCheck} color={'green'} className='w-[15px]' />
                         </span>
-                        <h4 className="mb-0.5 font-semibold">{formatDateHourString(received_date)}</h4>
+                        <h4 className="mb-0.5 font-semibold">{received_date}</h4>
                         <a className="text-sm font-medium hover:underline">Đã vận chuyển đến nơi</a>
                     </li>
                 ) : (
@@ -68,7 +68,7 @@ const HistoryOrder = ({
                             <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-red-100 ring-8 ring-white dark:bg-red-900 dark:ring-gray-800">
                                 <FontAwesomeIcon icon={faXmark} color={'#CA1616'} className='w-[15px]' />
                             </span>
-                            <h4 className="mb-0.5 font-semibold">Đã hủy vào {formatDateHourString(order_cancellation_date)}</h4>
+                            <h4 className="mb-0.5 font-semibold">Đã hủy vào {order_cancellation_date}</h4>
                             <a className="text-sm font-medium hover:underline">Vận chuyển</a>
                         </li>
                     ) : (
@@ -77,7 +77,7 @@ const HistoryOrder = ({
                                 <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-yellow-100 ring-8 ring-white dark:bg-yellow-900 dark:ring-gray-800">
                                     <FontAwesomeIcon icon={faTruckFast} color={'#D0A63B'} className='w-[15px]' />
                                 </span>
-                                <h4 className="mb-0.5 font-semibold">Dự kiến {formatDateExpected(delivery_date, 3)}</h4>
+                                <h4 className="mb-0.5 font-semibold">Dự kiến {formatDateExpected(Date(), 3)}</h4>
                                 <a className="text-sm font-medium hover:underline">Đang vận chuyển</a>
                             </li>
                         ) : (
@@ -85,7 +85,7 @@ const HistoryOrder = ({
                                 <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-900 dark:ring-gray-800">
                                     <FontAwesomeIcon icon={faTruckFast} color={'gray'} className='w-[15px]' />
                                 </span>
-                                <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">Dự kiến {formatDateExpected(created_at, 3)}</h4>
+                                <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">Dự kiến {formatDateExpected(Date(), 3)}</h4>
                                 <p className="text-sm font-normal text-gray-500 dark:text-gray-400">Vận chuyển</p>
                             </li>
                         )
@@ -97,7 +97,7 @@ const HistoryOrder = ({
                         <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-100 ring-8 ring-white dark:bg-green-900 dark:ring-gray-800">
                             <FontAwesomeIcon icon={faCheck} color={'green'} className='w-[15px]' />
                         </span>
-                        <h4 className="mb-0.5 font-semibold">{formatDateHourString(delivery_date)}</h4>
+                        <h4 className="mb-0.5 font-semibold">{delivery_date}</h4>
                         <a className="text-sm font-medium hover:underline">Đơn hàng đã xuất kho</a>
                     </li>
                 ) : (
@@ -106,7 +106,7 @@ const HistoryOrder = ({
                             <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-red-100 ring-8 ring-white dark:bg-red-900 dark:ring-gray-800">
                                 <FontAwesomeIcon icon={faXmark} color={'#CA1616'} className='w-[15px]' />
                             </span>
-                            <h4 className="mb-0.5 font-semibold">Đã hủy vào {formatDateHourString(order_cancellation_date)}</h4>
+                            <h4 className="mb-0.5 font-semibold">Đã hủy vào {order_cancellation_date}</h4>
                             <a className="text-sm font-medium hover:underline">Chuẩn bị đơn hàng</a>
                         </li>
                     ) : (
@@ -114,7 +114,7 @@ const HistoryOrder = ({
                             <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 ring-8 ring-white dark:bg-blue-900 dark:ring-gray-800">
                                 <FontAwesomeIcon icon={faHourglassHalf} color={'#3F68D2'} className='w-[15px]' />
                             </span>
-                            <h4 className="mb-0.5 font-semibold">Dự kiến {formatDateExpected(created_at, 2)}</h4>
+                            <h4 className="mb-0.5 font-semibold">Dự kiến {formatDateExpected(Date(), 2)}</h4>
                             <a className="text-sm font-medium hover:underline">Chuẩn bị đơn hàng</a>
                         </li>
                     )
@@ -124,7 +124,7 @@ const HistoryOrder = ({
                     <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-100 ring-8 ring-white dark:bg-green-900 dark:ring-gray-800">
                         <FontAwesomeIcon icon={faCheck} color={'green'} className='w-[15px]' />
                     </span>
-                    <h4 className="mb-0.5 font-semibold">{formatDateHourString(created_at)}</h4>
+                    <h4 className="mb-0.5 font-semibold">{created_at}</h4>
                     <a className="text-sm font-medium hover:underline">Thanh tóan thành công - VnPay</a>
                 </li>
 
@@ -132,8 +132,8 @@ const HistoryOrder = ({
                     <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-100 ring-8 ring-white dark:bg-green-900 dark:ring-gray-800">
                         <FontAwesomeIcon icon={faCheck} color={'green'} className='w-[15px]' />
                     </span>
-                    <h4 className="mb-0.5 font-semibold">{formatDateHourString(created_at)}</h4>
-                    <a className="text-sm font-medium hover:underline">Tạo đơn #MDH{12040900 +  id}</a>
+                    <h4 className="mb-0.5 font-semibold">{created_at}</h4>
+                    <a className="text-sm font-medium hover:underline">Tạo đơn #MDH{12040900 + id}</a>
                 </li>
             </ol>
         </div>

@@ -75,7 +75,7 @@ function orderDetailService() {
                 }
             }
         }
-    }
+    };
     const deleteOrderDetailByUser = {
         async getOrderDetailData(id) {
             try {
@@ -94,7 +94,7 @@ function orderDetailService() {
                 }
             }
         }
-    }
+    };
     const deleteOrderByUser = {
         async getOrderData(id) {
             try {
@@ -113,13 +113,92 @@ function orderDetailService() {
                 }
             }
         }
-    }
+    };
+    const orderList = {
+        async getOrderData(page, status, time) {
+            try {
+                const queryParams = new URLSearchParams({
+                    page: page + 1,
+                    status: status,
+                    time: time,
+                });
+                const response = await api.get(`/auth/orderList?${queryParams}`);
+                if (response.status === 200) {
+                    return {
+                        data: response.data.order.data,
+                        total_pages: response.data.order.last_page,
+                        total: response.data.order.total
+                    };
+                }
+            } catch (error) {
+                console.error('Error fetching order data:', error);
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        handleUnauthorized();
+                    }
+                    // Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+
+                    return {
+                        data: [],
+                        total_pages: 0,
+                        total: 0
+                    };
+                }
+            }
+        }
+    };
+    const statisticsOrder = async () => {
+        try {
+            const response = await api.get(`/auth/statisticsOrder`);
+            if (response.status === 200) {
+                return response.data.statisticsOrder;
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleUnauthorized();
+                }
+                Toastify.error(error.response.data.message);
+            } else {
+                Toastify.error("An unexpected error occurred.");
+            }
+        }
+    };
+    const orderById = {
+        async getOrderData(id) {
+            try {
+                const response = await api.get(`/auth/order/${id}`);
+                if (response.status === 200) {
+                    return {
+                        order: response.data.order,
+                        role: response.data.role,
+                        total_price: parseFloat(response.data.order.total_price),
+                        shipping_money: parseFloat(response.data.order.shipping_money)
+                    };
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 500) {
+                        handleUnauthorized();
+                    }
+                    Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+                }
+            }
+        }
+    };
     return {
         createOrderDetail,
         getOrderByUser,
         editOrderDetailByUser,
         deleteOrderDetailByUser,
-        deleteOrderByUser
+        deleteOrderByUser,
+        orderList,
+        statisticsOrder,
+        orderById
     };
 };
 

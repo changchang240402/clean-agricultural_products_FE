@@ -20,6 +20,7 @@ const Profile = () => {
             console.error('Error fetching data:', error);
         }
     };
+    console.log('role', user.detail.role);
     useEffect(() => {
         fetchData();
         if (navigator.geolocation) {
@@ -135,20 +136,24 @@ const Profile = () => {
                             onClick={() => setShowMapbox(true)}>
                             Vị trí của bạn
                         </h1>
-                        {user.detail.role == 1 ? (
+                        {user.detail.role === 1 && (
                             <h1
                                 style={!showMapbox ? { fontFamily: 'Lora, cursive' } : null}
                                 className={`w-fit font-serif my-4 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${!showMapbox ? 'border-[#FF8682]' : 'border-transparent'} dark:border-b-4 dark:border-yellow-600 dark:text-white lg:text-4xl md:text-2xl xs:text-xl cursor-pointer`}
                                 onClick={() => setShowMapbox(false)}>
                                 Đơn hàng của bạn
                             </h1>
-                        ) : (
+                        )}
+                        {(user.detail.role === 2 || user.detail.role === 3) && (
                             <h1
                                 style={!showMapbox ? { fontFamily: 'Lora, cursive' } : null}
                                 className={`w-fit font-serif my-4 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${!showMapbox ? 'border-[#FF8682]' : 'border-transparent'} dark:border-b-4 dark:border-yellow-600 dark:text-white lg:text-4xl md:text-2xl xs:text-xl cursor-pointer`}
                                 onClick={() => setShowMapbox(false)}>
                                 Bình luận, đánh giá
                             </h1>
+                        )}
+                        {user.detail.role === 0 && (
+                            <div></div>
                         )}
                     </div>
                     {showMapbox ? (
@@ -173,10 +178,14 @@ const Profile = () => {
                         </div>
                     ) : (
                         <div className="my-10 lg:w-[100%] md:h-[100%] xs:w-full xs:h-[100%]">
-                            {user.detail.role == 1 ? (
+                            {user.detail.role == 1 && (
                                 <ListOrder pathname={'/user/tracking/'} />
-                            ) : (
-                                <Review id={user.detail.id} type={0} rating={5} />
+                            )}
+                            {(user.detail.role === 2 || user.detail.role === 3) && (
+                                <Review id={user.detail.id} type={0} />
+                            )}
+                            {user.detail.role == 0 && (
+                                <div></div>
                             )}
                         </div>
                     )}

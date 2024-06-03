@@ -154,7 +154,7 @@ const Item = () => {
                         <div className="sm:flex items-center justify-between mt-6 mb-6">
                             <h2 style={{ fontFamily: 'Lora, cursive' }} className="text-3xl font-medium font-lora text-[#546869]">Bình luận, đánh giá</h2>
                         </div>
-                        <Review id={decodedId} type={1} rating={rating} />
+                        <Review id={decodedId} type={1} />
                     </div>
                     <br />
                 </div>

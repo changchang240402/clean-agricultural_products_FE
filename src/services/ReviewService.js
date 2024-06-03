@@ -14,7 +14,9 @@ function reviewService() {
                 const response = await api.get(`/auth/reviews?${queryParams}`);
                 if (response.status === 200) {
                     return {
-                        data: response.data.review,
+                        data: response.data.review.review,
+                        star: response.data.review.star.star,
+                        totalStart: response.data.review.star.totalStart
                     };
                 }
             } catch (error) {

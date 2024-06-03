@@ -78,6 +78,41 @@ function itemService() {
             }
         }
     };
+
+    const listItem = {
+        async getItemData(page, search, status) {
+            try {
+                const queryParams = new URLSearchParams({
+                    page: page + 1,
+                    name: search,
+                    status: status,
+                });
+                const response = await api.get(`/auth/items?${queryParams}`);
+                if (response.status === 200) {
+                    return {
+                        data: response.data.item.data,
+                        total_pages: response.data.item.last_page,
+                        total: response.data.item.total
+                    };
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        handleUnauthorized();
+                    }
+                    // Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+
+                    return {
+                        data: [],
+                        total_pages: 0,
+                        total: 0
+                    };
+                }
+            }
+        }
+    };
     const itemDetail = {
         async getItemData(id) {
             try {
@@ -129,7 +164,8 @@ function itemService() {
         newItem,
         itemToUser,
         itemDetail,
-        itemShop
+        itemShop,
+        listItem
     };
 };
 

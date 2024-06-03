@@ -14,7 +14,7 @@ import ShopDetail from "../../components/User/ShopDetail";
 import OrderTrackingUser from "../../components/OrderDetail/OrderTrackingUser";
 import VnPayReturn from "../../components/VnPay/VnPayReturn";
 import PaymentComponent from "../../components/VnPay/PaymentComponent";
-import CheckoutForm from "../../components/User/Stripe/Stripe";
+import Checkout from "../../components/User/Stripe/Stripe";
 const UserNavigation = () => {
     return (
         <div className="flex w-full h-screen">
@@ -31,8 +31,8 @@ const UserNavigation = () => {
                         <Route path="shop/:id" element={<ShopDetail />} />
                         <Route path="tracking/:id" element={<OrderTrackingUser />} />
                         <Route path="/vnpay_return" element={<VnPayReturn />} />
-                        <Route path="/payment" element={<PaymentComponent />} />
-                        <Route path="/pay" element={<CheckoutForm />} />
+                        {/* <Route path="/payment" element={<PaymentComponent />} />
+                        <Route path="/pay" element={<Checkout />} /> */}
                     </Routes>
                 </Suspense>
                 <Footer />

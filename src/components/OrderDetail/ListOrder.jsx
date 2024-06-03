@@ -1,84 +1,70 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBill, faTruckFast, faClipboardCheck, faCube, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faMoneyBill, faTruckFast, faClipboardCheck, faCube, faBan, faFilterCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
 import { formatDateString } from '../../utility/formatdate'
 import { MenuStatusOrder, MenuOrder } from '../Product/MenuProductType';
 import { StatusOrder, Paginate } from '../Components'
 import { Link } from "react-router-dom";
 import { encodeId } from '../../utility/utils';
+import orderDetailService from '../../services/OrderDetailService';
 const ListOrder = ({ pathname }) => {
-    const Data = [
-        {
-            id: 1,
-            date: '2024-05-15 14:01:01',
-            money: 1029402,
-            height: 123,
-            status: 2,
-        },
-        {
-            id: 2,
-            date: '2024-05-15 14:01:01',
-            money: 203412,
-            height: 123,
-            status: 3,
-        },
-        {
-            id: 3,
-            date: '2024-05-15 14:01:01',
-            money: 2930492,
-            height: 123,
-            status: 4,
-        },
-        {
-            id: 4,
-            date: '2024-05-15 14:01:01',
-            money: 3040244,
-            height: 123,
-            status: 5,
-        },
-        {
-            id: 5,
-            date: '2024-05-15 14:01:01',
-            money: 2938402,
-            height: 123,
-            status: 6,
-        },
-        {
-            id: 6,
-            date: '2024-05-15 14:01:01',
-            money: 9283942,
-            height: 123,
-            status: 4,
-        },
-        {
-            id: 7,
-            date: '2024-05-15 14:01:01',
-            money: 2930492,
-            height: 123,
-            status: 4,
-        },
-        {
-            id: 8,
-            date: '2024-05-15 14:01:01',
-            money: 3040244,
-            height: 123,
-            status: 5,
-        },
-        {
-            id: 9,
-            date: '2024-05-15 14:01:01',
-            money: 2938402,
-            height: 123,
-            status: 6,
-        },
-        {
-            id: 10,
-            date: '2024-05-15 14:01:01',
-            money: 9283942,
-            height: 123,
-            status: 4,
-        },
-    ];
+    const { orderList, statisticsOrder } = orderDetailService();
+    const [filter, setFilter] = useState({
+        pageCount: 0,
+        currentPage: 0,
+        totalOrder: 0,
+        status: '',
+        time: '',
+    });
+    const [dataOrders, setDataOrders] = useState([]);
+    const [statistic, setStatistic] = useState({});
+    const [isSearchClicked, setIsSearchClicked] = useState(true);
+    useEffect(() => {
+        if (isSearchClicked) {
+            fetchData();
+            setIsSearchClicked(false);
+        }
+    }, [filter, isSearchClicked]);
+
+    const fetchData = async () => {
+        try {
+            const data = await orderList.getOrderData(filter.currentPage, filter.status, filter.time);
+            const statistics = await statisticsOrder();
+            setStatistic(statistics)
+            if (data && data.total > 0) {
+                setDataOrders(data.data)
+                setFilter(prevFilter => ({ ...prevFilter, pageCount: data.total_pages, totalOrder: data.total }));
+            } else {
+                setDataOrders([])
+                setFilter(prevFilter => ({ ...prevFilter, pageCount: 0, totalOrder: 0 }));
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    console.log('a', statistic.totalMoney);
+    const handlePageClick = (selectedPage) => {
+        setFilter(prevFilter => ({ ...prevFilter, currentPage: selectedPage.selected }));
+        setIsSearchClicked(true);
+    };
+    const handleStatusChange = (event) => {
+        setFilter(prevFilter => ({ ...prevFilter, status: event.target.value, currentPage: 0 }));
+        setIsSearchClicked(true);
+    };
+    const handleTimeChange = (event) => {
+        setFilter(prevFilter => ({ ...prevFilter, time: event.target.value, currentPage: 0 }));
+        setIsSearchClicked(true);
+    };
+    const handleClearFilter = () => {
+        setFilter({
+            pageCount: 0,
+            currentPage: 0,
+            totalOrder: 0,
+            status: '',
+            time: '',
+        });
+        setIsSearchClicked(true);
+    };
     return (
         <div className="m-6">
             <div className="flex flex-wrap -mx-6 w-full">
@@ -90,7 +76,7 @@ const ListOrder = ({ pathname }) => {
                             </div>
                         </div>
                         <div className="mx-5">
-                            <h4 className="text-2xl font-semibold text-green-700">{Number(549380002902).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</h4>
+                            <h4 className="text-2xl font-semibold text-green-700">{Number(statistic.totalMoney).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</h4>
                             <div className="text-gray-500">Tổng tiền</div>
                         </div>
                     </div>
@@ -104,7 +90,7 @@ const ListOrder = ({ pathname }) => {
                             </div>
                         </div>
                         <div className="mx-5">
-                            <h4 className="text-2xl font-semibold text-[#1F8FBF]">678 <FontAwesomeIcon icon={faCube} color={'#1F8FBF'} /></h4>
+                            <h4 className="text-2xl font-semibold text-[#1F8FBF]">{statistic.totalComplete} <FontAwesomeIcon icon={faCube} color={'#1F8FBF'} /></h4>
                             <div className="text-gray-500">Hoàn thành</div>
                         </div>
                     </div>
@@ -118,7 +104,7 @@ const ListOrder = ({ pathname }) => {
                             </div>
                         </div>
                         <div className="mx-5">
-                            <h4 className="text-2xl font-semibold text-[#E16C2A]">678 <FontAwesomeIcon icon={faCube} color={'#E16C2A'} /></h4>
+                            <h4 className="text-2xl font-semibold text-[#E16C2A]">{statistic.totalTransported} <FontAwesomeIcon icon={faCube} color={'#E16C2A'} /></h4>
                             <div className="text-gray-500">Đang vận chuyển</div>
                         </div>
                     </div>
@@ -132,7 +118,7 @@ const ListOrder = ({ pathname }) => {
                             </div>
                         </div>
                         <div className="mx-5">
-                            <h4 className="text-2xl font-semibold text-[#CA1616]">4644 <FontAwesomeIcon icon={faCube} color={'#CA1616'} /></h4>
+                            <h4 className="text-2xl font-semibold text-[#CA1616]">{statistic.totalCancel} <FontAwesomeIcon icon={faCube} color={'#CA1616'} /></h4>
                             <div className="text-gray-500">Bị hủy</div>
                         </div>
                     </div>
@@ -143,11 +129,13 @@ const ListOrder = ({ pathname }) => {
                     style={{ fontFamily: 'Lora, cursive' }}
                     className="text-xl font-semibold text-gray-900 dark:text-white sm:text-4xl">Đơn đặt hàng của bạn</h2>
 
-                <div className="mt-6 gap-4 space-y-4 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
+                <div className="xl:w-2/3 lg:w-1/2 mt-6 gap-4 space-y-4 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
                     <div>
-                        <label for="order-type" className="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select order type</label>
-                        <select id="order-type" className="block w-full min-w-[8rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                            <option selected>Tất cả</option>
+                        <label htmlFor="order-type" className="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select order type</label>
+                        <select id="order-type" className="block w-full min-w-[8rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                            value={filter.status}
+                            onChange={handleStatusChange}>
+                            <option value=''>Tất cả</option>
                             {MenuStatusOrder.map((type, key) => (
                                 <option key={key} value={type.status}>{type.title}</option>
                             ))}
@@ -157,21 +145,26 @@ const ListOrder = ({ pathname }) => {
                     <span className="inline-block text-gray-500 dark:text-gray-400"> của </span>
 
                     <div>
-                        <label for="duration" className="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select duration</label>
-                        <select id="duration" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                            <option selected>Mặc định</option>
-                            {MenuOrder.map(menu => (
-                                <option value={menu.id}>{menu.title}</option>
+                        <label htmlFor="duration" className="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select duration</label>
+                        <select id="duration" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                            value={filter.time}
+                            onChange={handleTimeChange}>
+                            <option value=''>Mặc định</option>
+                            {MenuOrder.map((menu, key) => (
+                                <option key={key} value={menu.id}>{menu.title}</option>
                             ))}
                         </select>
                     </div>
+                    <button onClick={handleClearFilter}>
+                        <FontAwesomeIcon icon={faFilterCircleXmark} color={'#546869'} size='xl' />
+                    </button>
                 </div>
             </div>
-            {Data.length > 0 ? (
+            {dataOrders.length > 0 ? (
                 <div className="mt-6 flow-root sm:mt-8">
                     <div className="divide-y divide-gray-200 dark:divide-gray-700 h-[1050px] sm:h-[100%]">
-                        {Data?.map((data) => (
-                            <div className="flex flex-wrap items-center gap-y-6 py-6">
+                        {dataOrders?.map((data) => (
+                            <div className="flex flex-wrap items-center gap-y-6 py-6" key={data.id}>
                                 <div className="flex flex-wrap w-full lg:w-[80%]">
                                     <dl className="w-1/2 sm:w-1/4 lg:w-auto flex-1">
                                         <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Mã hóa đơn:</dt>
@@ -181,15 +174,15 @@ const ListOrder = ({ pathname }) => {
                                     </dl>
                                     <dl className="w-1/2 sm:w-1/4 lg:w-auto flex-1">
                                         <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Ngày đặt hàng:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{formatDateString(data.date)}</dd>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{formatDateString(data.order_date)}</dd>
                                     </dl>
                                     <dl className="w-1/2 sm:w-1/4 lg:w-auto flex-1">
                                         <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Tổng tiền:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{Number(data.money).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{Number(data.total_price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
                                     </dl>
                                     <dl className="w-1/2 sm:w-1/4 lg:w-auto flex-1">
                                         <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Khối lượng:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{data.height} Kg</dd>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{Math.floor(data.total_quantity)} Kg</dd>
                                     </dl>
                                 </div>
                                 <div className="flex flex-wrap w-full lg:w-[20%]">
@@ -207,16 +200,14 @@ const ListOrder = ({ pathname }) => {
                         ))}
                     </div>
                     <div className='flex flex-row justify-end'>
-                        <Paginate className='w-1/5'
-                            // handlePageClick={handlePageClick}
-                            pageCount={5} />
+                        <Paginate className='w-1/5' handlePageClick={handlePageClick} pageCount={filter.pageCount} />
                     </div>
                 </div>
             ) : (
                 <div className="text-center mt-8 text-gray-500">
                     Bạn chưa có đơn hàng nào
                 </div>
-            )}s
+            )}
         </div>
     )
 }
