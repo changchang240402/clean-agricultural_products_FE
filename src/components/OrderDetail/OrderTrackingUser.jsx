@@ -24,7 +24,7 @@ const OrderTrackingUser = () => {
     const fetchData = async () => {
         try {
             const data = await orderById.getOrderData(decodedId);
-            setOrderData(prevFilter => ({ ...prevFilter, detail: data.order, role: data.role, total: data.total_price +data.shipping_money }));
+            setOrderData(prevFilter => ({ ...prevFilter, detail: data.order, role: data.role, total: data.total_price + data.shipping_money }));
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -337,11 +337,11 @@ const OrderTrackingUser = () => {
                                 </div>
                             ) : (
                                 <HistoryOrder
-                                    id={5}
-                                    created_at={orderData.detail.created_at}
-                                    delivery_date={orderData.detail.delivery_date}
-                                    received_date={orderData.detail.received_date}
-                                    order_cancellation_date={orderData.detail.order_cancellation_date}
+                                    id={orderData.detail.id}
+                                    created_at={orderData?.detail?.created_at}
+                                    delivery_date={orderData?.detail?.delivery_date}
+                                    received_date={orderData?.detail?.received_date}
+                                    order_cancellation_date={orderData?.detail?.order_cancellation_date}
                                     status={orderData.detail.status}
                                 />
                             )}

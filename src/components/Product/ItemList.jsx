@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faSquarePlus, faMagnifyingGlass, faFilterCircleXmark, faLock, faLockOpen, faHourglassHalf, faBan, faCircleCheck, faPenToSquare, faEraser, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import itemService from '../../services/ItemService';
 import { Link } from "react-router-dom";
-
-const ItemList = ({ role }) => {
+import { encodeId } from '../../utility/utils';
+const ItemList = ({ role, pathname }) => {
     const { listItem } = itemService();
     const [filter, setFilter] = useState({
         pageCount: 0,
@@ -227,9 +227,9 @@ const ItemList = ({ role }) => {
                                                 <FontAwesomeIcon icon={faPenToSquare} color={'green'} size='2x' className='ml-3' />
                                             </button>
                                         )}
-                                        <button className="mb-8 text-base font-semibold text-gray-900 dark:text-white">
+                                        <Link to={{ pathname: `${pathname}${encodeId(data.id)}` }} className="mt-5 text-base font-semibold text-gray-900 dark:text-white">
                                             <FontAwesomeIcon icon={faEye} color={'black'} size='2x' className='ml-3' />
-                                        </button>
+                                        </Link>
                                     </dl>
                                 </div>
                             </div>

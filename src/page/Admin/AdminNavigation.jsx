@@ -13,6 +13,7 @@ import Seller from "../../components/Admin/Seller";
 import Trader from "../../components/Admin/Trader";
 import Item from "../../components/Admin/Item";
 import Product from "../../components/Admin/Product";
+import ItemDetail from "../../components/Product/ItemDetailAdminShop";
 const AdminNavigation = () => {
 
     return (
@@ -29,6 +30,7 @@ const AdminNavigation = () => {
                         <Route path="trader" element={<Trader />} />
                         <Route path="product" element={<Product />} />
                         <Route path="item" element={<Item />} />
+                        <Route path="item/:id" element={<ItemDetail />} />
                     </Routes>
                 </Suspense>
                 <Footer />

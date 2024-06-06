@@ -12,6 +12,7 @@ import OrderTrackingUser from "../../components/OrderDetail/OrderTrackingUser";
 import Item from "../../components/Seller/Item";
 import Product from "../../components/Seller/Product";
 import Home from "../../components/Seller/Home";
+import ItemDetail from "../../components/Product/ItemDetailAdminShop";
 const SellerNavigation = () => {
     return (
         <div className="flex w-full h-screen">
@@ -26,6 +27,7 @@ const SellerNavigation = () => {
                         <Route path="product" element={<Product />} />
                         <Route path="item" element={<Item />} />
                         <Route path="" element={<Home />} />
+                        <Route path="item/:id" element={<ItemDetail />} />
                     </Routes>
                 </Suspense>
                 <Footer />
