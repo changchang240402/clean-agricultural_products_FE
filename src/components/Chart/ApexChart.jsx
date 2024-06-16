@@ -18,7 +18,7 @@ const ApexChart = ({ orderMonthData }) => {
                 label: 'VND',
             },
         ],
-        width: 1200,
+        width: 780,
         height: 500,
     };
     const valueFormatter = (value) => {

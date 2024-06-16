@@ -75,7 +75,7 @@ const VnPayReturn = () => {
                                 </div>
                                 <div className="w-full text-left mb-8 flex items-center justify-between">
                                     <span className="text-gray-700 font-bold uppercase py-2">Tổng tiền thanh toán: </span>
-                                    <span className="text-gray-700 font-bold uppercase py-2">{Number(result.detail.vnp_Amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
+                                    <span className="text-gray-700 font-bold uppercase py-2">{Number(result.detail.vnp_Amount / 100).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
                                 </div>
                                 <div className="border-t-2 border-gray-300 pt-8 mb-8">
                                     <div className="text-gray-700 mb-2">Giao dịch thành công.</div>
@@ -104,7 +104,7 @@ const VnPayReturn = () => {
                         {result.detail.vnp_TransactionStatus === '02' && (
                             <div>
                                 <div className="w-full text-center mb-8 flex items-center justify-between mt-16">
-                                    <span style={{ fontFamily: 'Lobster, cursive' }} className="text-[#546869] text-center text-2xl mb-12 font-semibold">Giao dịch không thành công do người dùng hủy giao dịch </span>
+                                    <span style={{ fontFamily: 'Lobster, cursive' }} className="text-[#546869] text-center text-2xl mb-12 font-semibold">Giao dịch không thành công do khách hàng hủy giao dịch </span>
                                 </div>
                                 <div className="flex justify-center text-center">
                                     <Link to="/user/cart" className="bg-[#65B599] rounded-3xl px-6 py-3 font-bold text-white">

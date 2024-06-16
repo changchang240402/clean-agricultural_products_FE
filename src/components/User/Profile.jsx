@@ -62,7 +62,7 @@ const Profile = () => {
                     className="rounded-md lg:w-[12rem] lg:h-[12rem] md:w-[10rem] md:h-[10rem] sm:w-[8rem] sm:h-[8rem] xs:w-[7rem] xs:h-[7rem] outline outline-2 outline-offset-2 outline-green-500 relative lg:bottom-[5rem] sm:bottom-[4rem] xs:bottom-[3rem]" />
 
                 <h1
-                    className="w-full text-left my-4 sm:mx-4 xs:pl-4 text-gray-800 dark:text-white lg:text-4xl md:text-3xl sm:text-3xl xs:text-xl font-serif">
+                    className="w-full text-left my-4 sm:mx-4 xs:pl-4 text-gray-800 lg:text-4xl md:text-3xl sm:text-3xl xs:text-xl font-serif">
                     {user.detail.name}</h1>
 
             </div>
@@ -72,30 +72,30 @@ const Profile = () => {
                 <div className="w-full my-auto py-6 flex flex-col justify-center gap-2">
                     <div className="w-full flex sm:flex-row xs:flex-col gap-2 justify-center">
                         <div className="w-full">
-                            <dl className="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                            <dl className="text-gray-900 divide-y divide-gray-200">
                                 <div className="flex flex-col py-3">
-                                    <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Email</dt>
+                                    <dt className="mb-1 text-gray-500 md:text-lg">Email</dt>
                                     <dd className="text-lg font-semibold">{user.detail.email}</dd>
                                 </div>
                                 {user.detail.role == 3 ? (
-                                    <div className='text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700'>
+                                    <div className='text-gray-900 divide-y divide-gray-200'>
                                         <div className="flex flex-col py-3">
-                                            <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Ngày sinh</dt>
-                                            <dd className="text-lg font-semibold">{user.detail.birthday}</dd>
+                                            <dt className="mb-1 text-gray-500 md:text-lg">Ngày sinh</dt>
+                                            <dd className="text-lg font-semibold ">{user.detail.birthday}</dd>
                                         </div>
                                         <div className="flex flex-col py-3">
-                                            <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Loại xe</dt>
+                                            <dt className="mb-1 text-gray-500 md:text-lg">Loại xe</dt>
                                             <dd className="text-lg font-semibold">{user.detail.vehicles}</dd>
                                         </div>
                                         <div className="flex flex-col py-3">
-                                            <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Trọng tải</dt>
+                                            <dt className="mb-1 text-gray-500 md:text-lg">Trọng tải</dt>
                                             <dd className="text-lg font-semibold">{user.detail.payload} Kg</dd>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className='text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700'>
+                                    <div className='text-gray-900 divide-y divide-gray-200'>
                                         <div className="flex flex-col py-3 border-b">
-                                            <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Họ và tên</dt>
+                                            <dt className="mb-1 text-gray-500 md:text-lg">Họ và tên</dt>
                                             <dd className="text-lg font-semibold">{user.detail.name}</dd>
                                         </div>
                                     </div>
@@ -103,23 +103,23 @@ const Profile = () => {
                             </dl>
                         </div>
                         <div className="w-full">
-                            <dl className="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                            <dl className="text-gray-900 divide-y divide-gray-200">
                                 <div className="flex flex-col py-3">
-                                    <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Địa chỉ</dt>
+                                    <dt className="mb-1 text-gray-500 md:text-lg">Địa chỉ</dt>
                                     <dd className="text-lg font-semibold">{user.detail.address}</dd>
                                 </div>
                                 <div className="flex flex-col py-3">
-                                    <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Số điện thoại</dt>
+                                    <dt className="mb-1 text-gray-500 md:text-lg">Số điện thoại</dt>
                                     <dd className="text-lg font-semibold">{user.detail.phone}</dd>
                                 </div>
                                 {user.detail.role == 3 ? (
-                                    <div className='text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700'>
+                                    <div className='text-gray-900 divide-y divide-gray-200'>
                                         <div className="flex flex-col py-3">
-                                            <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Bằng lái xe</dt>
+                                            <dt className="mb-1 text-gray-500 md:text-lg">Bằng lái xe</dt>
                                             <dd className="text-lg font-semibold">{user.detail.driving_license_number}</dd>
                                         </div>
                                         <div className="flex flex-col py-3">
-                                            <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Biển số xe</dt>
+                                            <dt className="mb-1 text-gray-500 md:text-lg">Biển số xe</dt>
                                             <dd className="text-lg font-semibold">{user.detail.license_plates}</dd>
                                         </div>
                                     </div>
@@ -132,14 +132,14 @@ const Profile = () => {
                     <div className='flex flex-row mt-5'>
                         <h1
                             style={showMapbox ? { fontFamily: 'Lora, cursive' } : null}
-                            className={`w-fit font-serif my-4 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${showMapbox ? 'border-[#FF8682]' : 'border-transparent'} dark:border-b-4 dark:border-yellow-600 dark:text-white lg:text-4xl md:text-2xl xs:text-xl cursor-pointer mr-5`}
+                            className={`w-fit font-serif my-4 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${showMapbox ? 'border-[#FF8682]' : ''} lg:text-4xl md:text-2xl xs:text-xl cursor-pointer mr-5`}
                             onClick={() => setShowMapbox(true)}>
                             Vị trí của bạn
                         </h1>
                         {user.detail.role === 1 && (
                             <h1
                                 style={!showMapbox ? { fontFamily: 'Lora, cursive' } : null}
-                                className={`w-fit font-serif my-4 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${!showMapbox ? 'border-[#FF8682]' : 'border-transparent'} dark:border-b-4 dark:border-yellow-600 dark:text-white lg:text-4xl md:text-2xl xs:text-xl cursor-pointer`}
+                                className={`w-fit font-serif my-4 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${!showMapbox ? 'border-[#FF8682]' : ''} lg:text-4xl md:text-2xl xs:text-xl cursor-pointer`}
                                 onClick={() => setShowMapbox(false)}>
                                 Đơn hàng của bạn
                             </h1>
@@ -147,7 +147,7 @@ const Profile = () => {
                         {(user.detail.role === 2 || user.detail.role === 3) && (
                             <h1
                                 style={!showMapbox ? { fontFamily: 'Lora, cursive' } : null}
-                                className={`w-fit font-serif my-4 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${!showMapbox ? 'border-[#FF8682]' : 'border-transparent'} dark:border-b-4 dark:border-yellow-600 dark:text-white lg:text-4xl md:text-2xl xs:text-xl cursor-pointer`}
+                                className={`w-fit font-serif my-4 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${!showMapbox ? 'border-[#FF8682]' : ''} lg:text-4xl md:text-2xl xs:text-xl cursor-pointer`}
                                 onClick={() => setShowMapbox(false)}>
                                 Bình luận, đánh giá
                             </h1>

@@ -15,10 +15,10 @@ const PieChartData = ({ orderStatusData }) => {
                 {
                     data,
                     highlightScope: { faded: 'global', highlighted: 'item' },
-                    faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+                    faded: { innerRadius: 20, additionalRadius: -20, color: 'gray' },
                 },
             ]}
-            height={280}
+            height={200}
             colors={['#82D9FF', '#FFAF82', '#8DD3BB', '#B5659E', '#B82626']}
         />
     );

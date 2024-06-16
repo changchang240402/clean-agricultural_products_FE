@@ -7,7 +7,7 @@ import itemService from '../../services/ItemService';
 import { Link } from "react-router-dom";
 import { encodeId } from '../../utility/utils';
 const ItemList = ({ role, pathname }) => {
-    const { listItem } = itemService();
+    const { listItem, itemWarning, itemBan, itemUnBan } = itemService();
     const [filter, setFilter] = useState({
         pageCount: 0,
         currentPage: 0,
@@ -75,12 +75,37 @@ const ItemList = ({ role, pathname }) => {
         });
         setIsSearchClicked(true);
     };
+    const handleWarning = async () => {
+        try {
+            itemWarning();
+            fetchData();
+        } catch (error) {
+            console.error('Error warning file:', error);
+        }
+    };
+    const handleBan = async () => {
+        try {
+            itemBan();
+            fetchData();
+        } catch (error) {
+            console.error('Error warning file:', error);
+        }
+    };
+    const handleUnBan = async () => {
+        try {
+            itemUnBan();
+            fetchData();
+        } catch (error) {
+            console.error('Error warning file:', error);
+        }
+    };
+
     return (
         <div className="m-6">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between mt-12">
                 <h2
                     style={{ fontFamily: 'Lora, cursive' }}
-                    className="text-xl font-semibold text-gray-900 dark:text-white sm:text-4xl hidden lg:block">Danh sách mặt hàng</h2>
+                    className="text-xl font-semibold text-gray-900 sm:text-4xl hidden lg:block">Danh sách mặt hàng</h2>
 
                 <div className="xl:w-2/3 lg:w-full sm:w-full flex flex-row justify-between h-[40px]">
                     <button className={`flex flex-row items-center px-4 py-3 shadow-sm rounded-2xl border-2 focus:outline-none border-[#546869] bg-white h-auto w-1/4 sm:w-1/4`}>
@@ -112,7 +137,7 @@ const ItemList = ({ role, pathname }) => {
                         ))}
                     />
                     {role === 2 && (
-                        <button className="w-[100px] inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-blue-600 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-700 dark:hover:text-blue dark:focus:ring-blue-700 lg:w-[100px]">
+                        <button className="w-[100px] inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[100px]">
                             <FontAwesomeIcon icon={faSquarePlus} size='xl' className="mr-3" />
                             Tạo
                         </button>
@@ -120,15 +145,15 @@ const ItemList = ({ role, pathname }) => {
                     )}
                     {role === 0 && (
                         <div className='flex flex-row'>
-                            <button className="w-[120px] inline-flex justify-center rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-900 hover:bg-red-100 hover:text-red-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-red-600 dark:bg-red-800 dark:text-red-400 dark:hover:bg-red-700 dark:hover:text-red dark:focus:ring-red-700 lg:w-[120px] mr-3">
+                            <button onClick={handleWarning} className="w-[120px] inline-flex justify-center rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-900 hover:bg-red-100 hover:text-red-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[120px] mr-3">
                                 <FontAwesomeIcon icon={faTriangleExclamation} size='xl' className="mr-3" />
                                 Cảnh báo
                             </button>
-                            <button className="w-[120px] inline-flex justify-center rounded-lg border border-[#A65E2A] bg-white px-3 py-2 text-sm font-medium text-[#A65E2A] hover:bg-[#FAD9C2] hover:text-[#A65E2A] focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-[#A65E2A] dark:bg-[FAD9C2] dark:text-[#A65E2A] dark:hover:bg-[#FAD9C2] dark:hover:text-[#A65E2A] dark:focus:ring-[#FAD9C2] lg:w-[120px] mr-3">
+                            <button onClick={handleBan} className="w-[120px] inline-flex justify-center rounded-lg border border-[#A65E2A] bg-white px-3 py-2 text-sm font-medium text-[#A65E2A] hover:bg-[#FAD9C2] hover:text-[#A65E2A] focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[120px] mr-3">
                                 <FontAwesomeIcon icon={faLock} size='xl' className="mr-3" />
                                 Khóa
                             </button>
-                            <button className="w-[120px] inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-blue-600 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-700 dark:hover:text-blue dark:focus:ring-blue-700 lg:w-[120px]">
+                            <button onClick={handleUnBan} className="w-[120px] inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[120px]">
                                 <FontAwesomeIcon icon={faLockOpen} size='xl' className="mr-3" />
                                 Mở khóa
                             </button>
@@ -142,31 +167,31 @@ const ItemList = ({ role, pathname }) => {
             </div>
             {dataItems.length > 0 ? (
                 <div className="mt-6 flow-root sm:mt-8">
-                    <div className="divide-y divide-gray-200 dark:divide-gray-700 h-[1050px] sm:h-[100%]">
+                    <div className="divide-y divide-gray-200 h-[1050px] sm:h-[100%]">
                         {dataItems?.map((data) => (
                             <div className="flex flex-wrap items-center gap-y-6 py-6" key={data.id}>
                                 <div className="w-full lg:w-1/2 flex flex-wrap lg:flex-nowrap">
                                     <dl className="w-1/6 sm:w-1/5 lg:w-1/6">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Hình ảnh:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Hình ảnh:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <img height={80} width={80} src={data.image} alt="avatar" />
                                         </dd>
                                     </dl>
                                     <dl className="w-1/2 sm:w-2/5 lg:w-1/2">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Tên:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Tên:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{truncateItemName(data.item_name)}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Loại:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Loại:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.product.product_name}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Giá thấp nhất:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Giá thấp nhất:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{Number(data.product.price_min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} / kg</a>
                                         </dd>
                                     </dl>
@@ -174,19 +199,19 @@ const ItemList = ({ role, pathname }) => {
 
                                 <div className="w-full lg:w-1/2 flex flex-wrap lg:flex-nowrap lg:h-[110px] sm:h-auto">
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Giá mặt hàng:</dt>
+                                        <dt className="text-base font-medium text-gray-500">Giá mặt hàng:</dt>
                                         <dd className={`mt-1.5 text-base font-semibold ${priceColor(data.price, data.product.price_max, data.product.price_min)}`}>
                                             <a className="hover:underline">{Number(data.price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} / kg</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-2/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Giá cao nhất:</dt>
-                                        <dd className="mb-1.5 text-base font-semibold text-gray-900 dark:text-white mt-2">
+                                        <dt className="text-base font-medium text-gray-500">Giá cao nhất:</dt>
+                                        <dd className="mb-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{Number(data.product.price_max).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} / kg</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Lần cảnh báo:</dt>
+                                        <dt className="text-base font-medium text-gray-500">Lần cảnh báo:</dt>
                                         <dd className={`mt-1.5 text-base font-semibold ${color(data.notifications)}`}>
                                             <a className="hover:underline">{data.notifications}</a>
                                         </dd>
@@ -194,40 +219,40 @@ const ItemList = ({ role, pathname }) => {
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4 flex flex-row">
                                         {role === 0 && data.status === 2 && (
                                             <div className='flex flex-row'>
-                                                <button className="mb-8 text-base font-semibold text-gray-900 dark:text-white">
+                                                <button className="mb-8 text-base font-semibold text-gray-900">
                                                     <FontAwesomeIcon icon={faCircleCheck} color={'green'} size='2x' className='mr-3' />
                                                 </button>
-                                                <button className="mb-8 text-base font-semibold text-gray-900 dark:text-white">
+                                                <button className="mb-8 text-base font-semibold text-gray-900">
                                                     <FontAwesomeIcon icon={faBan} color={'#C82E0C'} size='2x' />
                                                 </button>
                                             </div>
                                         )}
                                         {role === 2 && data.status === 2 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mb-8 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faHourglassHalf} color={'#DD8534'} size='2x' className='ml-5 mr-3' />
                                             </button>
                                         )}
                                         {data.status === 0 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mb-8 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLockOpen} color={'#0B4465'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {data.status === 1 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mb-8 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLock} color={'#6F0D0D'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {data.status === 3 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mb-8 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faEraser} color={'gray'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {role === 2 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mb-8 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faPenToSquare} color={'green'} size='2x' className='ml-3' />
                                             </button>
                                         )}
-                                        <Link to={{ pathname: `${pathname}${encodeId(data.id)}` }} className="mt-5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <Link to={{ pathname: `${pathname}${encodeId(data.id)}` }} className="mt-5 text-base font-semibold text-gray-900">
                                             <FontAwesomeIcon icon={faEye} color={'black'} size='2x' className='ml-3' />
                                         </Link>
                                     </dl>

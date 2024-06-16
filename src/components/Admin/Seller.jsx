@@ -75,7 +75,7 @@ const Seller = () => {
             <div className="gap-4 sm:flex sm:items-center sm:justify-between mt-12">
                 <h2
                     style={{ fontFamily: 'Lora, cursive' }}
-                    className="hidden lg:block text-xl font-semibold text-gray-900 dark:text-white sm:text-4xl">Danh sách cửa hàng</h2>
+                    className="hidden lg:block text-xl font-semibold text-gray-900 sm:text-4xl">Danh sách cửa hàng</h2>
 
                 <div className="xl:w-2/3 lg:w-full flex flex-row justify-between h-[40px]">
                     <button className={`flex flex-row items-center px-4 py-3 shadow-sm rounded-2xl border-2 focus:outline-none border-[#546869] bg-white h-auto w-1/5`}>
@@ -124,64 +124,64 @@ const Seller = () => {
             </div>
             {dataUsers.length > 0 ? (
                 <div className="mt-6 flow-root sm:mt-8">
-                    <div className="divide-y divide-gray-200 dark:divide-gray-700 h-[1050px] sm:h-[100%]">
+                    <div className="divide-y divide-gray-200 h-[1050px] sm:h-[100%]">
                         {dataUsers?.map((data) => (
                             <div className="flex flex-wrap items-center gap-y-6 py-6" key={data.id}>
-                                <div className="w-full lg:w-1/2 flex flex-wrap lg:flex-nowrap">
+                                <div className="w-full lg:w-3/5 flex flex-wrap lg:flex-nowrap">
                                     <dl className="w-1/6 sm:w-1/5 lg:w-1/6">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Avatar:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Avatar:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <img height={40} width={40} src={data.avatar ? data.avatar : icon} alt="avatar" />
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Họ và tên:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Họ và tên:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.name}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-2/5 sm:w-2/5 lg:w-2/5">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Email:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Email:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.email}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/6 sm:w-1/5 lg:w-1/6">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Mặt hàng:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Mặt hàng:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.items_count}</a>
                                         </dd>
                                     </dl>
                                 </div>
 
-                                <div className="w-full lg:w-1/2 flex flex-wrap lg:flex-nowrap">
+                                <div className="w-full lg:w-2/5 flex flex-wrap lg:flex-nowrap">
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Hoạt động:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Hoạt động:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.total_items_in_use}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Xác nhận:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Xác nhận:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.total_items_accept}</a>
                                         </dd>
                                     </dl>
-                                    <dl className="w-1/4 sm:w-2/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Ngừng hoạt động:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                    <dl className="w-2/4 sm:w-2/5 lg:w-2/5">
+                                        <dt className="text-base font-medium text-gray-500">Ngừng hoạt động:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.total_items_archived}</a>
                                         </dd>
                                     </dl>
-                                    <dl className="w-1/4 sm:w-1/5 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Trạng thái:</dt>
+                                    <dl className="w-1/5 sm:w-1/5 lg:w-1/5">
+                                        <dt className="text-base font-medium text-gray-500">Trạng thái:</dt>
                                         {data.status === 1 && (
-                                            <button className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mt-1.5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLockOpen} color={'#0B4465'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {data.status === 2 && (
-                                            <button className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mt-1.5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLock} color={'#6F0D0D'} size='2x' className='ml-5' />
                                             </button>
                                         )}

@@ -4,9 +4,38 @@ import { faLocationDot, faShop, faTrashCan } from '@fortawesome/free-solid-svg-i
 import OrderDetailCart from '../OrderDetail/OrderDetailCart';
 import orderDetailService from '../../services/OrderDetailService';
 import VnPay from '../../services/VnPay';
+import userService from '../../services/UserService';
 // import { useLocation, useNavigate } from 'react-router-dom';
 // import { Toastify } from "../../toastify/Toastify";
 const Cart = () => {
+    const { totalOrder } = userService();
+    const [order, setOrder] = useState(null);
+
+    useEffect(() => {
+        const fetchTotal = async () => {
+            const total = await totalOrder();
+            setOrder(total);
+        }
+        fetchTotal();
+        // const socket = new WebSocket('ws://localhost:3000');
+
+        // socket.onmessage = (event) => {
+        //     const updatedOrder = JSON.parse(event.data);
+        //     setOrder(updatedOrder.totalOrder);
+        // };
+
+        // socket.onopen = () => {
+        //     console.log('WebSocket connection established');
+        // };
+
+        // socket.onclose = () => {
+        //     console.log('WebSocket connection closed');
+        // };
+
+        // return () => {
+        //     socket.close(); // Cleanup WebSocket connection on component unmount
+        // };
+    }, []);
     const { getOrderByUser, deleteOrderByUser } = orderDetailService();
     const [orders, setOrders] = useState([]);
     const { payment } = VnPay();
@@ -134,22 +163,22 @@ const Cart = () => {
                                     <div className="flex border-b border-gray-200 pb-3 mb-4 items-center justify-center">
                                         <h6 style={{ fontFamily: 'Lora, cursive' }} className="text-xl font-semibold text-[#546869] text-[26px]">Tổng hóa đơn</h6>
                                     </div>
-                                    <div className="space-y-4 bg-gray-50 p-6 dark:bg-gray-800">
+                                    <div className="space-y-4 bg-white-50 p-6">
                                         {orders.map((order, index) => (
                                             <div className="space-y-2" key={index}>
                                                 <dl className="flex items-center justify-between gap-4">
-                                                    <dt className="font-normal text-gray-500 dark:text-gray-400">Hóa đơn #MH{order.id}</dt>
-                                                    <dd className="font-medium text-gray-900 dark:text-white">{Number(order.total_price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
+                                                    <dt className="font-normal text-gray-500">Hóa đơn #MH{order.id}</dt>
+                                                    <dd className="font-medium text-gray-900">{Number(order.total_price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
                                                 </dl>
                                                 <dl className="flex items-center justify-between gap-4">
-                                                    <dt className="font-normal text-gray-500 dark:text-gray-400">Phí vận chuyển</dt>
+                                                    <dt className="font-normal text-gray-500">Phí vận chuyển</dt>
                                                     <dd className="text-base font-medium text-green-500">+{Number(order.shipping_money).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
                                                 </dl>
                                             </div>
                                         ))}
-                                        <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-                                            <dt className="text-lg font-bold text-gray-900 dark:text-white">Total</dt>
-                                            <dd className="text-lg font-bold text-gray-900 dark:text-white">{totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
+                                        <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
+                                            <dt className="text-lg font-bold text-gray-900">Total</dt>
+                                            <dd className="text-lg font-bold text-gray-900">{totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
                                         </dl>
                                     </div>
                                     <div

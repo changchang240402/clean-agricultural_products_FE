@@ -75,7 +75,7 @@ const Trader = () => {
             <div className="gap-4 sm:flex sm:items-center sm:justify-between mt-12">
                 <h2
                     style={{ fontFamily: 'Lora, cursive' }}
-                    className="hidden lg:block text-xl font-semibold text-gray-900 dark:text-white sm:text-4xl">Danh sách tài xế</h2>
+                    className="hidden lg:block text-xl font-semibold text-gray-900 sm:text-4xl">Danh sách tài xế</h2>
 
                 <div className="xl:w-2/3 lg:w-full flex flex-row justify-between h-[40px]">
                     <button className={`flex flex-row items-center px-4 py-3 shadow-sm rounded-2xl border-2 focus:outline-none border-[#546869] bg-white h-auto w-1/5`}>
@@ -124,31 +124,31 @@ const Trader = () => {
             </div>
             {dataUsers.length > 0 ? (
                 <div className="mt-6 flow-root sm:mt-8">
-                    <div className="divide-y divide-gray-200 dark:divide-gray-700 h-[1050px] sm:h-[100%]">
+                    <div className="divide-y divide-gray-200 h-[1050px] sm:h-[100%]">
                         {dataUsers?.map((data) => (
                             <div className="flex flex-wrap items-center gap-y-6 py-6" key={data.id}>
                                 <div className="w-full lg:w-1/2 flex flex-wrap lg:flex-nowrap">
                                     <dl className="w-1/6 sm:w-1/4 lg:w-1/6">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Avatar:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Avatar:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <img height={40} width={40} src={data.avatar ? data.avatar : icon} alt="avatar" />
                                         </dd>
                                     </dl>
                                     <dl className="w-1/3 sm:w-1/4 lg:w-1/3">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Họ và tên:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Họ và tên:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.name}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/4 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Ngày sinh:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Ngày sinh:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.birthday}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/4 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Bằng lái xe:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Bằng lái xe:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.driving_license_number}</a>
                                         </dd>
                                     </dl>
@@ -156,20 +156,20 @@ const Trader = () => {
 
                                 <div className="w-full lg:w-1/2 flex flex-wrap lg:flex-nowrap">
                                     <dl className="w-1/4 sm:w-1/4 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Biển số xe:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Biển số xe:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.license_plates}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/4 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Tổng đánh giá:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                        <dt className="text-base font-medium text-gray-500">Tổng đánh giá:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900">
                                             <a className="hover:underline">{data.total_reviews}</a>
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/4 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Đánh giá:</dt>
-                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white flex flex-row">
+                                        <dt className="text-base font-medium text-gray-500">Đánh giá:</dt>
+                                        <dd className="mt-1.5 text-base font-semibold text-gray-900 flex flex-row">
                                             <StarRating
                                                 size={16}
                                                 rating={data.average_review_score}
@@ -178,29 +178,29 @@ const Trader = () => {
                                         </dd>
                                     </dl>
                                     <dl className="w-1/4 sm:w-1/4 lg:w-1/4">
-                                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">Trạng thái:</dt>
+                                        <dt className="text-base font-medium text-gray-500">Trạng thái:</dt>
                                         {data.status === 0 && (
                                             <div className='flex flex-row'>
-                                                <button className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                                <button className="mt-1.5 text-base font-semibold text-gray-900">
                                                     <FontAwesomeIcon icon={faCircleCheck} color={'green'} size='2x' className='mr-3' />
                                                 </button>
-                                                <button className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                                <button className="mt-1.5 text-base font-semibold text-gray-900">
                                                     <FontAwesomeIcon icon={faBan} color={'#C82E0C'} size='2x' />
                                                 </button>
                                             </div>
                                         )}
                                         {data.status === 1 && (
-                                            <button className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mt-1.5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLockOpen} color={'#0B4465'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {data.status === 2 && (
-                                            <button className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                            <button className="mt-1.5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLock} color={'#6F0D0D'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {data.status === 3 && (
-                                            <div className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                                            <div className="mt-1.5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faTruckFast} color={'#C0B907'} size='2x' className='ml-5' />
                                             </div>
                                         )}

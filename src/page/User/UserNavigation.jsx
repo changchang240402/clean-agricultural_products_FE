@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Route, Routes } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -14,8 +14,16 @@ import ShopDetail from "../../components/User/ShopDetail";
 import OrderTrackingUser from "../../components/OrderDetail/OrderTrackingUser";
 import VnPayReturn from "../../components/VnPay/VnPayReturn";
 import PaymentComponent from "../../components/VnPay/PaymentComponent";
-import Checkout from "../../components/User/Stripe/Stripe";
+import { useNavigate } from 'react-router-dom';
+// import Checkout from "../../components/User/Stripe/Stripe";
 const UserNavigation = () => {
+    const navigate = useNavigate();
+    const accessToken = localStorage.getItem('userRole');
+    useEffect(() => {
+        if (accessToken !== "1") {
+            navigate('/');
+        }
+    }, [accessToken, navigate]);
     return (
         <div className="flex w-full h-screen">
             <div className="flex bg-white flex-col flex-1">

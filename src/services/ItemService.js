@@ -134,6 +134,60 @@ function itemService() {
             }
         }
     };
+    const itemWarning = async () => {
+        try {
+            const response = await api.post(`/admin/itemWarning`);
+            if (response.status === 200) {
+                Toastify.success("Đã gửi thông báo cảnh báo");
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleUnauthorized();
+                }
+                Toastify.error(error.response.data.message);
+            } else {
+                Toastify.error("An unexpected error occurred.");
+            }
+        }
+    };
+
+    const itemBan = async () => {
+        try {
+            const response = await api.post(`/admin/itemBan`);
+            if (response.status === 200) {
+                Toastify.success("Đã khóa các sản phẩm");
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleUnauthorized();
+                }
+                Toastify.error(error.response.data.message);
+            } else {
+                Toastify.error("An unexpected error occurred.");
+            }
+        }
+    };
+
+    const itemUnBan = async () => {
+        try {
+            const response = await api.post(`/admin/itemUnban`);
+            if (response.status === 200) {
+                Toastify.success("Đã mở các sản phẩm");
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleUnauthorized();
+                }
+                Toastify.error(error.response.data.message);
+            } else {
+                Toastify.error("An unexpected error occurred.");
+            }
+        }
+    };
+
     const itemShop = {
         async getItemShopData(id) {
             try {
@@ -165,7 +219,10 @@ function itemService() {
         itemToUser,
         itemDetail,
         itemShop,
-        listItem
+        listItem,
+        itemWarning,
+        itemBan,
+        itemUnBan
     };
 };
 

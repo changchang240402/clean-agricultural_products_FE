@@ -9,8 +9,10 @@ import mapBox from '../../services/MapBox';
 import orderDetailService from '../../services/OrderDetailService';
 import { decodeId } from '../../utility/utils';
 import { useParams } from "react-router-dom";
+import DraggableModal from '../Review/CreateRview';
+import CancelModal from '../Review/Cancel';
 const OrderTrackingUser = () => {
-    const { orderById } = orderDetailService();
+    const { orderById, updateOrder } = orderDetailService();
     const { id } = useParams();
     const decodedId = decodeId(id);
     const [orderData, setOrderData] = useState({
@@ -18,6 +20,7 @@ const OrderTrackingUser = () => {
         role: null,
         total: 0
     });
+    const [content, setContent] = useState('');
     useEffect(() => {
         fetchData();
     }, [decodedId]);
@@ -85,6 +88,26 @@ const OrderTrackingUser = () => {
         }
     }, [showMapbox, orderData.detail]);
     console.log("end", endPosition);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+    const handleOpenCancelModal = () => {
+        setIsCancelModalOpen(true);
+    };
+
+    const handleCloseCancelModal = () => {
+        setIsCancelModalOpen(false);
+    };
+
+    const handleOpenModal = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
+    const handleUpdateClick = async (time) => {
+        try {
+            await updateOrder.getOrderData(decodedId, time, content);
+        } catch (error) {
+            console.error('Error fetching location:', error);
+        }
+        fetchData();
+    };
     return (
         <>
             {orderData.detail && (
@@ -122,31 +145,43 @@ const OrderTrackingUser = () => {
                             )}
                             <div className="box group ml-2 mt-5">
                                 {(orderData.detail.status === 2 || orderData.detail.status === 3) && orderData.role === 1 && (
-                                    <div className="w-full inline-flex justify-center rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-900 hover:bg-red-100 hover:text-red-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-red-600 dark:bg-red-800 dark:text-red-400 dark:hover:bg-red-700 dark:hover:text-red dark:focus:ring-red-700 lg:w-[150px]">
-                                        Hủy đơn
-                                    </div>
-                                )}
+                                    <div>
+                                        <button onClick={handleOpenCancelModal} className="w-full inline-flex justify-center rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-900 hover:bg-red-100 hover:text-red-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[150px]">
+                                            Hủy đơn
+                                        </button>
+                                        <CancelModal
+                                            isOpen={isCancelModalOpen}
+                                            onClose={handleCloseCancelModal}
+                                            content={content}
+                                            setContent={setContent}
+                                            handleUpdateClick={() => handleUpdateClick(1)}
 
-                                {orderData.detail.status === 2 && orderData.role === 3 && (
-                                    <div className="w-full inline-flex justify-center rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-900 hover:bg-red-100 hover:text-red-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-red-600 dark:bg-red-800 dark:text-red-400 dark:hover:bg-red-700 dark:hover:text-red dark:focus:ring-red-700 lg:w-[150px]">
-                                        Từ chối
+                                        />
                                     </div>
                                 )}
 
                                 {orderData.detail.status === 2 && orderData.role === 2 && (
-                                    <div className="w-full inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-blue-600 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-700 dark:hover:text-blue dark:focus:ring-blue-700 lg:w-[150px]">
+                                    <button onClick={() => handleUpdateClick(2)} className="w-full inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[150px]">
                                         Giao hàng
-                                    </div>
+                                    </button>
                                 )}
 
                                 {orderData.detail.status === 3 && orderData.role === 3 && (
                                     <div className="flex flex-row">
-                                        <div className="mr-3 w-full inline-flex justify-center rounded-lg border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-green-600 dark:bg-green-800 dark:text-green-400 dark:hover:bg-green-700 dark:hover:text-green dark:focus:ring-green-700 lg:w-[150px]">
+                                        <button onClick={() => handleUpdateClick(3)} className="mr-3 w-full inline-flex justify-center rounded-lg border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[150px]">
                                             Hoàn thành
-                                        </div>
-                                        <div className="w-full inline-flex justify-center rounded-lg border border-violet-200 bg-white px-3 py-2 text-sm font-medium text-violet-900 hover:bg-violet-100 hover:text-violet-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-violet-600 dark:bg-violet-800 dark:text-violet-400 dark:hover:bg-violet-700 dark:hover:text-violet dark:focus:ring-violet-700 lg:w-[150px]">
+                                        </button>
+                                        <button onClick={handleOpenCancelModal} className="w-full inline-flex justify-center rounded-lg border border-violet-200 bg-white px-3 py-2 text-sm font-medium text-violet-900 hover:bg-violet-100 hover:text-violet-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[150px]">
                                             Trả hàng
-                                        </div>
+                                        </button>
+                                        <CancelModal
+                                            isOpen={isCancelModalOpen}
+                                            onClose={handleCloseCancelModal}
+                                            content={content}
+                                            setContent={setContent}
+                                            handleUpdateClick={() => handleUpdateClick(4)}
+
+                                        />
                                     </div>
                                 )}
                             </div>
@@ -172,9 +207,15 @@ const OrderTrackingUser = () => {
                                         </div>
                                         {(orderData.detail.status === 4 || orderData.detail.status === 5) && (
                                             <div className="box group ml-2 mt-5 flex justify-center items-end">
-                                                <div className="mr-3 w-full inline-flex justify-center rounded-lg border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-green-600 dark:bg-green-800 dark:text-green-400 dark:hover:bg-green-700 dark:hover:text-green dark:focus:ring-green-700 lg:w-[150px]">
+                                                <button onClick={handleOpenModal} className="mr-3 w-full inline-flex justify-center rounded-lg border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[150px]">
                                                     Đánh giá
-                                                </div>
+                                                </button>
+                                                <DraggableModal
+                                                    isOpen={isModalOpen}
+                                                    onClose={handleCloseModal}
+                                                    type={0}
+                                                    type_id={orderData.detail.seller.id}
+                                                />
                                             </div>
                                         )}
                                     </div>
@@ -229,9 +270,15 @@ const OrderTrackingUser = () => {
                                         </div>
                                         {(orderData.detail.status === 4 || orderData.detail.status === 5) && (
                                             <div className="box group ml-2 mt-5 flex justify-center items-center">
-                                                <div className="mr-3 w-full inline-flex justify-center rounded-lg border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-green-600 dark:bg-green-800 dark:text-green-400 dark:hover:bg-green-700 dark:hover:text-green dark:focus:ring-green-700 lg:w-[150px]">
+                                                <div onClick={handleOpenModal} className="mr-3 w-full inline-flex justify-center rounded-lg border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[150px]">
                                                     Đánh giá
                                                 </div>
+                                                <DraggableModal
+                                                    isOpen={isModalOpen}
+                                                    onClose={handleCloseModal}
+                                                    type={0}
+                                                    type_id={orderData.detail.trader.id}
+                                                />
                                             </div>
                                         )}
                                     </div>
@@ -241,57 +288,63 @@ const OrderTrackingUser = () => {
                     </div>
 
                     <div className="mt-6 sm:mt-8 lg:flex lg:gap-8">
-                        <div className="w-full lg:w-3/5 divide-y divide-gray-200 overflow-hidden rounded-lg border border-[#E5DCD7] border-[2px] dark:divide-gray-700 dark:border-gray-700 flex flex-col justify-between">
+                        <div className="w-full lg:w-3/5 divide-y divide-gray-200 overflow-hidden rounded-lg border border-[#E5DCD7] border-[2px] flex flex-col justify-between">
                             {orderData.detail.order_details?.map((data) => (
                                 <div className="space-y-4 p-6 flex flex-row" key={data.id}>
                                     <div className="space-y-2 w-1/5 flex justify-center">
                                         <img className="w-full" src={data.item.image} alt="dress" />
                                     </div>
                                     <div className="flex items-start w-full flex-col space-y-4 md:space-y-0">
-                                        <h3 className="text-xl dark:text-white xl:text-2xl font-semibold leading-6 text-gray-800 mb-5">{truncateItemName(data.item.item_name)}</h3>
+                                        <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800 mb-5">{truncateItemName(data.item.item_name)}</h3>
                                         <div className='flex flex-row w-full'>
                                             <div className="flex flex-col justify-between items-start w-1/3">
-                                                <p className="text-base dark:text-white xl:text-lg leading-6 px-8">{Number(data.item.price_type).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-                                                <p className="text-base dark:text-white xl:text-lg leading-6 px-8">{data.item.type} Kg</p>
+                                                <p className="text-base xl:text-lg leading-6 px-8">{Number(data.item.price_type).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                                                <p className="text-base xl:text-lg leading-6 px-8">{data.item.type} Kg</p>
                                             </div>
                                             <div className="flex flex-col justify-center space-x-8 items-center w-1/3">
-                                                <p className="text-base dark:text-white xl:text-lg leading-6 text-gray-800"> x {data.count}</p>
+                                                <p className="text-base xl:text-lg leading-6 text-gray-800"> x {data.count}</p>
                                             </div>
                                             <div className="flex flex-col justify-between items-end w-1/3">
-                                                <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">{Number(data.item.price_type * data.count).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
-                                                <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">{data.item.type * data.count} Kg</p>
+                                                <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">{Number(data.item.price_type * data.count).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                                                <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">{data.item.type * data.count} Kg</p>
                                             </div>
                                             {orderData.detail.status === 4 && orderData.role === 1 && (
                                                 <div className="box group ml-5 flex justify-center items-center w-[100px]">
-                                                    <div className="mr-3 w-full inline-flex justify-center rounded-lg border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-green-600 dark:bg-green-800 dark:text-green-400 dark:hover:bg-green-700 dark:hover:text-green dark:focus:ring-green-700 lg:w-[150px]">
+                                                    <div onClick={handleOpenModal} className="mr-3 w-full inline-flex justify-center rounded-lg border border-green-200 bg-white px-3 py-2 text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[150px]">
                                                         Đánh giá
                                                     </div>
+                                                    <DraggableModal
+                                                        isOpen={isModalOpen}
+                                                        onClose={handleCloseModal}
+                                                        type={1}
+                                                        type_id={data.item.id}
+                                                    />
                                                 </div>
                                             )}
                                         </div>
                                     </div>
                                 </div>
                             ))}
-                            <div className="space-y-4 bg-gray-50 p-6 dark:bg-gray-800">
+                            <div className="space-y-4 bg-gray-50 p-6">
                                 <div className="space-y-2">
                                     <dl className="flex items-center justify-between gap-4">
-                                        <dt className="font-normal text-gray-500 dark:text-gray-400">Đơn hàng</dt>
-                                        <dd className="font-medium text-gray-900 dark:text-white">{Number(orderData.detail.total_price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
+                                        <dt className="font-normal text-gray-500">Đơn hàng</dt>
+                                        <dd className="font-medium text-gray-900">{Number(orderData.detail.total_price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
                                     </dl>
 
                                     <dl className="flex items-center justify-between gap-4">
-                                        <dt className="font-normal text-gray-500 dark:text-gray-400">Phí vận chuyển</dt>
+                                        <dt className="font-normal text-gray-500">Phí vận chuyển</dt>
                                         <dd className="text-base font-medium text-green-500">+ {Number(orderData.detail.shipping_money).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
                                     </dl>
                                 </div>
                                 <div>
-                                    <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-                                        <dt className="text-lg font-bold text-gray-900 dark:text-white">Tổng tiền</dt>
-                                        <dd className="text-lg font-bold text-gray-900 dark:text-white">{Number(orderData.total).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
+                                    <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
+                                        <dt className="text-lg font-bold text-gray-900">Tổng tiền</dt>
+                                        <dd className="text-lg font-bold text-gray-900">{Number(orderData.total).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</dd>
                                     </dl>
-                                    <dl className="flex items-center justify-between gap-4 border-gray-200 dark:border-gray-700">
-                                        <dt className="text-lg font-bold text-gray-900 dark:text-white">Tổng khối lượng</dt>
-                                        <dd className="text-lg font-bold text-gray-900 dark:text-white">{Math.floor(orderData.detail.total_quantity)} Kg</dd>
+                                    <dl className="flex items-center justify-between gap-4 border-gray-200">
+                                        <dt className="text-lg font-bold text-gray-900">Tổng khối lượng</dt>
+                                        <dd className="text-lg font-bold text-gray-900">{Math.floor(orderData.detail.total_quantity)} Kg</dd>
                                     </dl>
                                 </div>
                             </div>
@@ -303,13 +356,13 @@ const OrderTrackingUser = () => {
                                     <div className='flex flex-row'>
                                         <h1
                                             style={showMapbox ? { fontFamily: 'Lora, cursive' } : null}
-                                            className={`w-fit font-serif my-2 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${showMapbox ? 'border-[#FF8682]' : 'border-transparent'} dark:border-b-4 dark:border-yellow-600 dark:text-white lg:text-2xl md:text-xl xs:text-xl cursor-pointer mr-5`}
+                                            className={`w-fit font-serif my-2 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${showMapbox ? 'border-[#FF8682]' : ''} lg:text-2xl md:text-xl xs:text-xl cursor-pointer mr-5`}
                                             onClick={() => setShowMapbox(true)}>
                                             Vị trí nhận hàng
                                         </h1>
                                         <h1
                                             style={!showMapbox ? { fontFamily: 'Lora, cursive' } : null}
-                                            className={`w-fit font-serif my-2 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${!showMapbox ? 'border-[#FF8682]' : 'border-transparent'} dark:border-b-4 dark:border-yellow-600 dark:text-white lg:text-2xl md:text-xl xs:text-xl cursor-pointer`}
+                                            className={`w-fit font-serif my-2 pb-1 pr-2 rounded-b-md border-b-4 text-[#546869] ${!showMapbox ? 'border-[#FF8682]' : ''} lg:text-2xl md:text-xl xs:text-xl cursor-pointer`}
                                             onClick={() => setShowMapbox(false)}>
                                             Vị trí giao hàng
                                         </h1>

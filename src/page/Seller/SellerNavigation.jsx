@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Route, Routes } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +13,15 @@ import Item from "../../components/Seller/Item";
 import Product from "../../components/Seller/Product";
 import Home from "../../components/Seller/Home";
 import ItemDetail from "../../components/Product/ItemDetailAdminShop";
+import { useNavigate } from 'react-router-dom';
 const SellerNavigation = () => {
+    const navigate = useNavigate();
+    const accessToken = localStorage.getItem('userRole');
+    useEffect(() => {
+        if (accessToken !== "2") {
+            navigate('/');
+        }
+    }, [accessToken, navigate]);
     return (
         <div className="flex w-full h-screen">
             <SideBar MenuItems={MenuSeller} />

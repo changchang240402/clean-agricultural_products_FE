@@ -10,11 +10,11 @@ const schema = yup.object({
     email: yup.string()
         .email('Email phải hợp lệ')
         .required('Không được để trống')
-        .max(50,'Email dài tối đa 50 ký tự'),
+        .max(50, 'Email dài tối đa 50 ký tự'),
     password: yup.string()
         .required('Không được để trống')
-        .min(8,'Mật khẩu phải dài tối thiểu 8 ký tự')
-        .max(20,'Mật khẩu phải dài tối đa 50 ký tự'),
+        .min(8, 'Mật khẩu phải dài tối thiểu 8 ký tự')
+        .max(20, 'Mật khẩu phải dài tối đa 50 ký tự'),
 })
 
 const Login = () => {
@@ -35,10 +35,10 @@ const Login = () => {
     return (
         <div className="flex z-10">
             <div className=" flex flex-col justify-center items-center flex-1 h-screen bg-white font-poppins">
-                <div className="container rounded-3xl m-10 shadow-xl bg-white w-1/2 ">
+                <div className="rounded-3xl shadow-xl bg-white w-2/3 ">
                     <div className="m-10">
                         <div className="flex justify-start my-5 items-start">
-                            <Logo size='50' className='text-5xl'/>
+                            <Logo size='50' className='text-5xl' />
                         </div>
                         <form
                             className="form flex flex-col"

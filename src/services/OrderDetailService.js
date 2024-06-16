@@ -190,6 +190,29 @@ function orderDetailService() {
             }
         }
     };
+    const updateOrder = {
+        async getOrderData(id, time, content) {
+            try {
+                const queryParams = new URLSearchParams({
+                    time: time,
+                    content: content,
+                });
+                const response = await api.post(`/auth/updateOrder/${id}?${queryParams}`);
+                if (response.status === 200) {
+                    Toastify.success("Cập nhập thành công");
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        handleUnauthorized();
+                    }
+                    Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+                }
+            }
+        }
+    };
     return {
         createOrderDetail,
         getOrderByUser,
@@ -198,7 +221,8 @@ function orderDetailService() {
         deleteOrderByUser,
         orderList,
         statisticsOrder,
-        orderById
+        orderById,
+        updateOrder
     };
 };
 

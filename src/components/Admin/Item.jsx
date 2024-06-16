@@ -3,7 +3,7 @@ import ItemList from '../Product/ItemList'
 
 const Item = () => {
     return (
-        <ItemList role={0} pathname={'/admin/item/'}/>
+        <ItemList role={0} pathname={'/admin/item/'} />
     )
 }
 

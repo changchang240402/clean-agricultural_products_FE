@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Route, Routes } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -14,8 +14,15 @@ import Trader from "../../components/Admin/Trader";
 import Item from "../../components/Admin/Item";
 import Product from "../../components/Admin/Product";
 import ItemDetail from "../../components/Product/ItemDetailAdminShop";
+import { useNavigate } from 'react-router-dom';
 const AdminNavigation = () => {
-
+    const navigate = useNavigate();
+    const accessToken = localStorage.getItem('userRole');
+    useEffect(() => {
+        if (accessToken !== "0") {
+            navigate('/');
+        }
+    }, [accessToken, navigate]);
     return (
         <div className="flex w-full h-screen">
             <SideBar MenuItems={MenuAdmin} />

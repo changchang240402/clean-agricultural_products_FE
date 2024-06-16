@@ -16,14 +16,20 @@ function SideBar({ MenuItems }) {
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
+    useEffect(() => {
+        const currentPath = location.pathname.split('/').pop();
+        const currentItem = MenuItems.find(item => item.url === currentPath);
+        if (currentItem) {
+            setActive(currentItem.title);
+        }
+    }, [location.pathname, MenuItems]);
     const handleShowSidebar = () => {
         setIsShow(!isShow);
     };
 
     return (
         <div
-            className={`flex font-poppins h-screen bg-[#fff] transition-all duration-500 text-white font-roboto border-white ${isShow ? "w-72" : "w-20"
+            className={`flex font-poppins h-screen bg-[#fff] transition-all duration-500 text-white font-roboto border-white ${isShow ? "w-150" : "w-20"
                 }`}
         >
             <div className="items flex flex-col w-full">

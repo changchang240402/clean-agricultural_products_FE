@@ -99,35 +99,35 @@ const StatusOrder = React.forwardRef(function StatusOrder(props, ref) {
         switch (status) {
             case 2:
                 return (
-                    <dd className="me-2 mt-1.5 inline-flex items-center rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300 w-[105px]">
+                    <dd className="border border-blue-800 me-2 mt-1.5 inline-flex items-center rounded bg-white px-2.5 py-0.5 text-xs font-medium text-blue-800 w-[105px]">
                         <FontAwesomeIcon icon={faHourglassHalf} color={'blue'} className='mr-1 w-[15px]' />
                         Chuẩn bị
                     </dd>
                 );
             case 3:
                 return (
-                    <dd className="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 w-[105px]">
+                    <dd className="border border-orange-800 me-2 mt-1.5 inline-flex items-center rounded bg-white px-2.5 py-0.5 text-xs font-medium text-yellow-800 w-[105px]">
                         <FontAwesomeIcon icon={faTruckFast} color={'#C0B907'} className='mr-1 w-[15px]' />
                         Vận chuyển
                     </dd>
                 );
             case 4:
                 return (
-                    <dd className="me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 w-[105px]">
+                    <dd className="border border-green-800 me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-white text-green-800 w-[105px]">
                         <FontAwesomeIcon icon={faCheck} color={'green'} className='mr-1 w-[15px]' />
                         Hoàn thành
                     </dd>
                 );
             case 5:
                 return (
-                    <dd className="me-2 mt-1.5 inline-flex items-center rounded bg-violet-100 px-2.5 py-0.5 text-xs font-medium text-violet-800 dark:bg-violet-900 dark:text-violet-300 w-[105px]">
+                    <dd className="border border-violet-800 me-2 mt-1.5 inline-flex items-center rounded bg-white px-2.5 py-0.5 text-xs font-medium text-violet-800 w-[105px]">
                         <FontAwesomeIcon icon={faRotateLeft} color={'#5907C0'} className='mr-1 w-[15px]' />
                         Trả hàng
                     </dd>
                 );
             case 6:
                 return (
-                    <dd className="me-2 mt-1.5 inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300 w-[105px]">
+                    <dd className="border border-red-800 me-2 mt-1.5 inline-flex items-center rounded bg-white px-2.5 py-0.5 text-xs font-medium text-red-800 w-[105px]">
                         <FontAwesomeIcon icon={faXmark} color={'#CA1616'} className='mr-1 w-[15px]' />
                         Đã hủy
                     </dd>

@@ -197,6 +197,32 @@ function userService() {
             }
         }
     };
+    const upload = {
+        async getData(formData) {
+            try {
+                const response = await api.post(`/admin/upload`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                if (response.status === 200) {
+                    Toastify.success("Cập nhập giá thành công");
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 422) {
+                        Toastify.error(`Validation failed: ${errorMessages}`);
+                    } else if (error.response.status === 500) {
+                        Toastify.error("Upload failed: Server error.");
+                    } else {
+                        Toastify.error(error.response.data.message);
+                    }
+                } else {
+                    Toastify.error("Upload failed");
+                }
+            }
+        }
+    };
     return {
         shop,
         shopDetail,
@@ -204,7 +230,8 @@ function userService() {
         userToAdmin,
         sellerToAdmin,
         traderToAdmin,
-        statistics
+        statistics,
+        upload
     };
 };
 

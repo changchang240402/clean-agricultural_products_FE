@@ -213,7 +213,7 @@ const MenuAdmin = [
         url: "",
     },
     {
-        title: "Người dùng",
+        title: "Khách hàng",
         icon: faUser,
         url: "users",
     },
