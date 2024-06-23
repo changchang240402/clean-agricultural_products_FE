@@ -223,6 +223,89 @@ function userService() {
             }
         }
     };
+    const updateStatus = {
+        async getData(id, time, status) {
+            try {
+                const queryParams = new URLSearchParams({
+                    status: status,
+                    time: time
+                });
+                const response = await api.post(`/admin/updateStatusUser/${id}?${queryParams}`);
+                if (response.status === 200) {
+                    Toastify.success("Cập nhập thành công");
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        handleUnauthorized();
+                    }
+                    Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+                }
+            }
+        }
+    };
+    const notifications = async () => {
+        try {
+            const response = await api.get(`/auth/notification`);
+            if (response.status === 200) {
+                return {
+                    data: response.data.notifi,
+                    count: response.data.count
+                };
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleUnauthorized();
+                }
+                Toastify.error(error.response.data.message);
+            } else {
+                Toastify.error("An unexpected error occurred.");
+                return {
+                    data: [],
+                    count: 0
+                };
+            }
+        }
+    };
+    const deleteNotifi = {
+        async geId(id) {
+            try {
+                const response = await api.delete(`/auth/delete/${id}`);
+                if (response.status === 200) {
+                    // return response.data
+                }
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 500) {
+                        handleUnauthorized();
+                    }
+                    Toastify.error(error.response.data.message);
+                } else {
+                    Toastify.error("An unexpected error occurred.");
+                }
+            }
+        }
+    };
+    const updateNotifi = async () => {
+        try {
+            const response = await api.post(`/auth/updateNotifi`);
+            if (response.status === 200) {
+                // return response.data
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleUnauthorized();
+                }
+                Toastify.error(error.response.data.message);
+            } else {
+                Toastify.error("An unexpected error occurred.");
+            }
+        }
+    };
     return {
         shop,
         shopDetail,
@@ -231,7 +314,11 @@ function userService() {
         sellerToAdmin,
         traderToAdmin,
         statistics,
-        upload
+        upload,
+        updateStatus,
+        notifications,
+        deleteNotifi,
+        updateNotifi
     };
 };
 

@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import DraggableModal from '../Review/CreateRview';
 import CancelModal from '../Review/Cancel';
 const OrderTrackingUser = () => {
-    const { orderById, updateOrder } = orderDetailService();
+    const { orderById, updateOrder, updateBillById } = orderDetailService();
     const { id } = useParams();
     const decodedId = decodeId(id);
     const [orderData, setOrderData] = useState({
@@ -108,6 +108,13 @@ const OrderTrackingUser = () => {
         }
         fetchData();
     };
+    const handleCancelClick = async () => {
+        try {
+            await updateBillById.getData(decodedId);
+        } catch (error) {
+            console.error('Error fetching location:', error);
+        }
+    };
     return (
         <>
             {orderData.detail && (
@@ -158,6 +165,11 @@ const OrderTrackingUser = () => {
 
                                         />
                                     </div>
+                                )}
+                                {orderData.detail.status === 2 && orderData.role === 3 && (
+                                    <button onClick={() => handleCancelClick()} className="w-full inline-flex justify-center rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-900 hover:bg-red-100 hover:text-red-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[150px]">
+                                        Từ chối
+                                    </button>
                                 )}
 
                                 {orderData.detail.status === 2 && orderData.role === 2 && (

@@ -7,7 +7,7 @@ import itemService from '../../services/ItemService';
 import { Link } from "react-router-dom";
 import { encodeId } from '../../utility/utils';
 const ItemList = ({ role, pathname }) => {
-    const { listItem, itemWarning, itemBan, itemUnBan } = itemService();
+    const { listItem, itemWarning, itemBan, itemUnBan, updateStatus } = itemService();
     const [filter, setFilter] = useState({
         pageCount: 0,
         currentPage: 0,
@@ -16,7 +16,10 @@ const ItemList = ({ role, pathname }) => {
         status: ''
     });
     const priceColor = (price, price_max, price_min) => {
-        if (price >= price_min && price <= price_max) {
+        const parsedPrice = parseFloat(price);
+        const parsedPriceMax = parseFloat(price_max);
+        const parsedPriceMin = parseFloat(price_min);
+        if (parsedPrice >= parsedPriceMin && parsedPrice <= parsedPriceMax) {
             return 'text-green-500';
         } else {
             return 'text-red-500';
@@ -100,6 +103,14 @@ const ItemList = ({ role, pathname }) => {
         }
     };
 
+    const handleUpdateClick = async (id, time, status) => {
+        try {
+            await updateStatus.getData(id, time, status);
+        } catch (error) {
+            console.error('Error fetching location:', error);
+        }
+        fetchData();
+    };
     return (
         <div className="m-6">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between mt-12">
@@ -137,10 +148,12 @@ const ItemList = ({ role, pathname }) => {
                         ))}
                     />
                     {role === 2 && (
-                        <button className="w-[100px] inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[100px]">
+                        <Link
+                            to="/seller/createItem"
+                            className="w-[100px] inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 lg:w-[100px]">
                             <FontAwesomeIcon icon={faSquarePlus} size='xl' className="mr-3" />
                             Tạo
-                        </button>
+                        </Link>
 
                     )}
                     {role === 0 && (
@@ -219,10 +232,10 @@ const ItemList = ({ role, pathname }) => {
                                     <dl className="w-1/4 sm:w-1/5 lg:w-1/4 flex flex-row">
                                         {role === 0 && data.status === 2 && (
                                             <div className='flex flex-row'>
-                                                <button className="mb-8 text-base font-semibold text-gray-900">
+                                                <button onClick={() => handleUpdateClick(data.id, 2, 0)} className="mb-8 text-base font-semibold text-gray-900">
                                                     <FontAwesomeIcon icon={faCircleCheck} color={'green'} size='2x' className='mr-3' />
                                                 </button>
-                                                <button className="mb-8 text-base font-semibold text-gray-900">
+                                                <button onClick={() => handleUpdateClick(data.id, 3, '')} className="mb-8 text-base font-semibold text-gray-900">
                                                     <FontAwesomeIcon icon={faBan} color={'#C82E0C'} size='2x' />
                                                 </button>
                                             </div>
@@ -233,24 +246,25 @@ const ItemList = ({ role, pathname }) => {
                                             </button>
                                         )}
                                         {data.status === 0 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900">
+                                            <button onClick={() => role === 0 ? handleUpdateClick(data.id, 1, 1) : handleUpdateClick(data.id, 1, 3)} className="mb-8 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLockOpen} color={'#0B4465'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {data.status === 1 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900">
+                                            <button onClick={() => role === 0 ? handleUpdateClick(data.id, 1, 0) : ""} className="mb-8 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLock} color={'#6F0D0D'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {data.status === 3 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900">
+                                            <button onClick={() => role === 2 ? handleUpdateClick(data.id, 1, 0) : ""} className="mb-8 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faEraser} color={'gray'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {role === 2 && (
-                                            <button className="mb-8 text-base font-semibold text-gray-900">
+                                            <Link to="/seller/updateItem" state={{ itemData: data }}
+                                                className="mt-5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faPenToSquare} color={'green'} size='2x' className='ml-3' />
-                                            </button>
+                                            </Link>
                                         )}
                                         <Link to={{ pathname: `${pathname}${encodeId(data.id)}` }} className="mt-5 text-base font-semibold text-gray-900">
                                             <FontAwesomeIcon icon={faEye} color={'black'} size='2x' className='ml-3' />

@@ -2,9 +2,9 @@ import { Toastify } from "../toastify/Toastify";
 import api from "../utility/api";
 import { formatDate } from '../utility/formatdate';
 import { handleUnauthorized } from "./AuthService";
-
+import { useNavigate } from "react-router-dom";
 function productService() {
-
+    const navigate = useNavigate();
     const productType = {
         async getProductData(id) {
             try {
@@ -23,6 +23,26 @@ function productService() {
                 } else {
                     Toastify.error("An unexpected error occurred.");
                 }
+            }
+        }
+    };
+
+    const listProduct = async () => {
+        try {
+            const response = await api.get(`/seller/listProduct`);
+            if (response.status === 200) {
+                return {
+                    product: response.data.product,
+                };
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleUnauthorized();
+                }
+                Toastify.error(error.response.data.message);
+            } else {
+                Toastify.error("An unexpected error occurred.");
             }
         }
     };
@@ -60,9 +80,32 @@ function productService() {
             }
         }
     };
+    const updateProduct = async (id, product_name, price_min, price_max) => {
+        try {
+            const response = await api.put(`/admin/updateProduct/${id}`, {
+                product_name,
+                price_min,
+                price_max,
+            });
+            if (response.status === 200) {
+                Toastify.success("Điều chỉnh thông tin thành công")
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleUnauthorized();
+                }
+                Toastify.error(error.response.data.message);
+            } else {
+                Toastify.error("An unexpected error occurred.");
+            }
+        }
+    };
     return {
         productType,
-        productList
+        productList,
+        listProduct,
+        updateProduct
     };
 };
 

@@ -16,32 +16,6 @@ import '../../index.css'
 import userService from '../../services/UserService';
 
 const Navbar = () => {
-
-    // useEffect(() => {
-    //     const fetchTotal = async () => {
-    //         const total = await totalOrder();
-    //         setOrder(total);
-    //     }
-    //     fetchTotal();
-        // const socket = new WebSocket('ws://localhost:3000');
-
-        // socket.onmessage = (event) => {
-        //     const updatedOrder = JSON.parse(event.data);
-        //     setOrder(updatedOrder.totalOrder);
-        // };
-
-        // socket.onopen = () => {
-        //     console.log('WebSocket connection established');
-        // };
-
-        // socket.onclose = () => {
-        //     console.log('WebSocket connection closed');
-        // };
-
-        // return () => {
-        //     socket.close(); // Cleanup WebSocket connection on component unmount
-        // };
-    // }, []);
     return (
         <div className="bg-white top-0 sticky z-10 shadow-lg font-karla">
             <div className="container mx-auto px-4">

@@ -213,6 +213,21 @@ function orderDetailService() {
             }
         }
     };
+    const updateBillById = {
+        async getData(id) {
+            try {
+                const response = await api.post(`/trader/updateBillById/${id}`);
+                if (response.status === 200) {
+                    Toastify.success("Bạn đã đã từ chối đơn hàng thành công.");
+                    navigate('/trader/order');
+                }
+            } catch (error) {
+                if (error.response) {
+                    Toastify.error(error.response.data.message);
+                }
+            }
+        }
+    }
     return {
         createOrderDetail,
         getOrderByUser,
@@ -222,7 +237,8 @@ function orderDetailService() {
         orderList,
         statisticsOrder,
         orderById,
-        updateOrder
+        updateOrder,
+        updateBillById
     };
 };
 

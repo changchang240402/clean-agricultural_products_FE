@@ -8,7 +8,7 @@ import userService from '../../services/UserService';
 import icon from '../../assets/user.png';
 import { StarRating } from '../ratingstar'
 const Trader = () => {
-    const { traderToAdmin } = userService();
+    const { traderToAdmin, updateStatus } = userService();
     const sortData = Object.keys(SORT);
     const [filter, setFilter] = useState({
         pageCount: 0,
@@ -69,6 +69,14 @@ const Trader = () => {
             status: ''
         });
         setIsSearchClicked(true);
+    };
+    const handleUpdateClick = async (id, time, status) => {
+        try {
+            await updateStatus.getData(id, time, status);
+        } catch (error) {
+            console.error('Error fetching location:', error);
+        }
+        fetchData();
     };
     return (
         <div className="m-6">
@@ -181,21 +189,21 @@ const Trader = () => {
                                         <dt className="text-base font-medium text-gray-500">Trạng thái:</dt>
                                         {data.status === 0 && (
                                             <div className='flex flex-row'>
-                                                <button className="mt-1.5 text-base font-semibold text-gray-900">
+                                                <button onClick={() => handleUpdateClick(data.id, 2, 1)} className="mt-1.5 text-base font-semibold text-gray-900">
                                                     <FontAwesomeIcon icon={faCircleCheck} color={'green'} size='2x' className='mr-3' />
                                                 </button>
-                                                <button className="mt-1.5 text-base font-semibold text-gray-900">
+                                                <button onClick={() => handleUpdateClick(data.id, 3, '')} className="mt-1.5 text-base font-semibold text-gray-900">
                                                     <FontAwesomeIcon icon={faBan} color={'#C82E0C'} size='2x' />
                                                 </button>
                                             </div>
                                         )}
                                         {data.status === 1 && (
-                                            <button className="mt-1.5 text-base font-semibold text-gray-900">
+                                            <button onClick={() => handleUpdateClick(data.id, 1, 2)} className="mt-1.5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLockOpen} color={'#0B4465'} size='2x' className='ml-5' />
                                             </button>
                                         )}
                                         {data.status === 2 && (
-                                            <button className="mt-1.5 text-base font-semibold text-gray-900">
+                                            <button onClick={() => handleUpdateClick(data.id, 1, 1)} className="mt-1.5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faLock} color={'#6F0D0D'} size='2x' className='ml-5' />
                                             </button>
                                         )}

@@ -25,11 +25,11 @@ const ChooseRoleForm = ({ handleRoleSelection, nextStep, prevStep }) => {
     };
 
     return (
-        <form className="form flex flex-col" onSubmit={handleSubmit(handleFormSubmit)}>
+        <form className="flex flex-col" onSubmit={handleSubmit(handleFormSubmit)}>
             <p style={{ fontFamily: 'Lobster, cursive' }} className="text-[#546869] text-center text-4xl mt-10 mb-12 font-semibold">
                 Bạn là:
             </p>
-            <div className="flex flex-col ml-[200px]">
+            <div className="flex flex-col">
                 <label className="inline-flex items-center">
                     <input
                         type="radio"

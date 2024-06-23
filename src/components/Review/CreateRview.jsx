@@ -26,13 +26,10 @@ const DraggableModal = ({ isOpen, onClose, type, type_id }) => {
         onClose();
     }
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
-            <div
-                className="bg-white rounded shadow-lg w-1/2 max-w-lg"
-                style={{ position: 'absolute' }}
-            >
-                <div className="flex flex-row justify-between border-b px-4 py-2 cursor-move">
-                    <h3 style={{ fontFamily: 'Lora, cursive' }} className="text-4xl font-medium font-lora text-[#65B599]">Đánh giá</h3>
+        < div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50" >
+            <div className="bg-white rounded shadow-lg w-1/2 max-w-lg">
+                <div className="flex flex-row justify-between border-b px-4 py-2">
+                    <h3 className="text-4xl font-medium text-[#65B599]">Đánh giá</h3>
                     <button className="border bg-red-600 h-[20px] w-[20px] text-white" onClick={handClose}>X</button>
                 </div>
                 <div className="p-4">
@@ -70,7 +67,7 @@ const DraggableModal = ({ isOpen, onClose, type, type_id }) => {
                     </form>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

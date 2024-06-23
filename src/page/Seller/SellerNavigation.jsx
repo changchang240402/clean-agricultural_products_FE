@@ -14,6 +14,8 @@ import Product from "../../components/Seller/Product";
 import Home from "../../components/Seller/Home";
 import ItemDetail from "../../components/Product/ItemDetailAdminShop";
 import { useNavigate } from 'react-router-dom';
+import CreateItem from "../../components/Product/CreateItem";
+import UpdateItem from "../../components/Product/UpdateItem";
 const SellerNavigation = () => {
     const navigate = useNavigate();
     const accessToken = localStorage.getItem('userRole');
@@ -36,6 +38,8 @@ const SellerNavigation = () => {
                         <Route path="item" element={<Item />} />
                         <Route path="" element={<Home />} />
                         <Route path="item/:id" element={<ItemDetail />} />
+                        <Route path="createItem" element={<CreateItem />} />
+                        <Route path="updateItem" element={<UpdateItem />} />
                     </Routes>
                 </Suspense>
                 <Footer />

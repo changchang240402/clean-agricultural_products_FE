@@ -1,239 +1,208 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createCommentRequest } from '../store/actions/comment';
-import { createNewCommentService, getCommentsByPostIdService } from '../services/comment';
-import { useParams, useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
-import trang from '../assets/trang.jpg'
-import { CiMenuKebab } from "react-icons/ci";
-import { FaStar } from 'react-icons/fa';
-import Swal from 'sweetalert2';
-import { deleteCommentService, hiddenCommentService } from '../services/comment';
-import { updatePostStarsService } from '../services/post';
-const Comment = () => {
-    const dispatch = useDispatch();
-    const { postId } = useParams();
-    const { currentData } = useSelector(state => state.user);
-    const navigate = useNavigate();
-
-    const [commentContent, setCommentContent] = useState('');
-    const [comments, setComments] = useState([]);
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
-    const [commentSuccess, setCommentSuccess] = useState(false);
-    const [rating, setRating] = useState(0);
-    const [selectedComment, setSelectedComment] = useState(null); // Lưu trữ bình luận được chọn
-    const [showMenu, setShowMenu] = useState(null); // Hiển thị menu hoặc không
-    const [lastClickedCommentId, setLastClickedCommentId] = useState(null);
-
-
-
+import camera from '../../assets/camera.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faImage, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import itemService from '../../services/ItemService';
+import Loading from '../Loading/Loading';
+import { Button, Label2, Component, LabelError, Component2, Component3 } from '../Components';
+import { yupResolver } from "@hookform/resolvers/yup";
+import productService from '../../services/ProductService';
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+const CreateItem = () => {
+    const [isLoading, setIsLoading] = useState(false)
+    const { apiUploadImages, schema, createItem } = itemService();
+    const [id, setId] = useState('');
+    const { handleSubmit,
+        register,
+        setValue,
+        watch,
+        formState: { errors },
+        reset
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
+    const { listProduct } = productService();
+    const [image, setImage] = useState('');
+    const [products, setProducts] = useState([]);
+    const [product, setProduct] = useState(null);
     useEffect(() => {
-        fetchComments();
-    }, [postId]);
-
-    const fetchComments = async () => {
+        fetchData();
+    }, []);
+    const fetchData = async () => {
         try {
-            const commentsData = await getCommentsByPostIdService(postId);
-            // Lọc ra những bình luận chưa bị ẩn
-            const visibleComments = commentsData.filter(comment => !comment.hidden);
-            setComments(visibleComments);
+            const data = await listProduct();
+            setProducts(data.product)
         } catch (error) {
-            console.error('Failed to fetch comments:', error);
+            console.error('Error fetching data:', error);
         }
     };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const userId = currentData ? currentData.id : null;
-        const content = event.target.body ? event.target.body.value : ''; // Ensure event.target.body is defined
-
+    const handleFileChange = async (e) => {
+        setIsLoading(true)
+        const response = await apiUploadImages(e.target.files[0])
+        setIsLoading(false)
+        setImage(response);
+    };
+    const handleSelectChange = (e) => {
+        const selectedId = e.target.value;
+        setId(selectedId);
+        setValue('product_id', selectedId, { shouldValidate: true });
+        const select = products.find(item => item.id == selectedId);
+        setProduct(select);
+    };
+    const price = watch("price", 0);
+    const type = watch("type", 0);
+    const [priceType, setPrice] = useState(0);
+    useEffect(() => {
+        const priceValue = parseFloat(price) || 0;
+        const typeValue = parseFloat(type) || 0;
+        const priceTypeValue = priceValue * typeValue;
+        setPrice(priceTypeValue);
+    }, [price, type, setValue]);
+    const handleCancel = () => {
+        reset();
+    };
+    const formSubmit = async (data) => {
+        const { item_name, product_id, describe, total, price, type } = data;
         try {
-            if (!userId) {
-                navigate('/login');
-                return;
-            }
-
-            dispatch(createCommentRequest(userId, postId, content, rating));
-            await createNewCommentService(userId, postId, content, rating);
-
-            // Sau khi đăng bình luận thành công, gọi API updatePostStars để tính toán lại số sao
-            await updatePostStarsService(); // Gọi hàm updatePostStars
-
-            setCommentContent('');
-            fetchComments();
-            setIsPopupVisible(false);
-            setCommentSuccess(true);
+            await createItem(item_name, product_id, describe, total, price, type, priceType, image);
         } catch (error) {
-            console.error('Failed to create comment:', error);
+            alert("Đã xảy ra lỗi không mong muốn.");
+            console.error("Error submitting form:", error);
         }
     };
-
-    const handleRatingClick = (selectedRating) => {
-        setRating(selectedRating); // Cập nhật số sao đánh giá khi người dùng nhấp vào biểu tượng sao
-        setIsPopupVisible(true);
-    };
-
-
-    const handleClosePopup = () => {
-        setIsPopupVisible(false);
-    };
-    const handleStar = (star) => {
-        return Array.from({ length: +star }, (_, index) => index + 1);
-    };
-
-    const handleContextMenu = (comment) => {
-        setSelectedComment(comment); // Lưu trữ thông tin bình luận được chọn
-
-        if (showMenu === comment.id) {
-            setShowMenu(null); // Ẩn menu nếu click lần thứ hai vào cùng một bình luận
-        } else {
-            setShowMenu(comment.id); // Hiển thị menu cho bình luận được chọn
-        }
-
-        setLastClickedCommentId(comment.id); // Lưu id của bình luận được click lần cuối
-    };
-
-    // Hàm xử lý sửa bình luận
-    const handleHiddenComment = async () => {
-        try {
-            // Thực hiện xóa bình luận bằng cách gọi deleteCommentService với selectedComment.id
-            await hiddenCommentService(selectedComment.id);
-            await updatePostStarsService(); // Gọi hàm updatePostStars 
-
-            // Xóa bình luận thành công, cập nhật danh sách bình luận
-            await fetchComments(); // Gọi lại hàm fetchComments để cập nhật danh sách bình luận mới
-        } catch (error) {
-
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: 'Bạn có không có quyền ẩn bình luận này!',
-            });
-        } finally {
-            setShowMenu(null); // Ẩn menu lựa chọn sau khi thực hiện hành động
-        }
-    };
-
-    // Hàm xử lý xóa bình luận
-    const handleDeleteComment = async () => {
-        try {
-            // Thực hiện xóa bình luận bằng cách gọi deleteCommentService với selectedComment.id
-            await deleteCommentService(selectedComment.id);
-
-            // Xóa bình luận thành công, cập nhật danh sách bình luận
-            // Sau khi đăng bình luận thành công, gọi API updatePostStars để tính toán lại số sao
-            await updatePostStarsService(); // Gọi hàm updatePostStars
-            await fetchComments(); // Gọi lại hàm fetchComments để cập nhật danh sách bình luận mới
-        } catch (error) {
-
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: 'Bạn có không có quyền xóa bình luận này!',
-            });
-        } finally {
-            setShowMenu(null); // Ẩn menu lựa chọn sau khi thực hiện hành động
-        }
-    };
-
     return (
-        <div className="w-full bg-white p-2 my-4">
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-4">
-                    {comments.map((comment, index) => (
-                        <div key={index} className="flex items-start w-full border rounded-md">
-                            <div className="p-3 flex gap-6 flex-1">
-                                <img src={comment?.user?.avatar || 'https://hethongxephangtudong.net/public/client/images/no-avatar.png'} alt="avatar" className="object-cover w-10 h-10 rounded-full border-2 border-emerald-400 shadow-emerald-400" />
-                                <div className="flex flex-col justify-between">
-                                    <h3>
-                                        <p className="font-bold">{comment?.user?.name}</p>
-                                        <p className='text-[12px]'>{format(new Date(comment.createdAt), 'dd/MM/yyyy')}</p>
-                                    </h3>
-                                    <p className='flex gap-1 mt-3 mb-2'>
-                                        {handleStar(comment?.rate).map((star, number) => (
-                                            <FaStar key={number} className="star-item" style={{ color: '#fbbf24' }} size={23} />
-                                        ))}
-                                    </p>
-                                    <p className="text-gray-600 mt-2">
-                                        {comment?.content}
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="relative p-3">
-                                <CiMenuKebab size={24} color='black' onClick={() => handleContextMenu(comment)} />
-                                {showMenu === comment.id && (
-                                    <div className="absolute right-1 mt-2">
-                                        <div className="w-32 bg-white border border-gray-200 rounded-md shadow-lg divide-y divide-gray-100">
-                                            <button className="block rounded-md w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleHiddenComment}>
-                                                Ẩn bình luận
-                                            </button>
-                                            <button className="block rounded-md w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleDeleteComment}>
-                                                Xóa bình luận
-                                            </button>
-                                        </div>
-                                    </div>
+        <>
+            <form onSubmit={handleSubmit(formSubmit)} className="pt-8">
+                <div className='flex flex-row items-center justify-between mr-3'>
+                    <h3 style={{ fontFamily: 'Lora, cursive' }} className="text-4xl font-medium text-[#65B599]">Đăng sản phẩm</h3>
+                    <Link
+                        to="/seller/item" className="rounded-3xl px-2 py-2 font-bold text-white inline-flex justify-center border border-green-200 bg-white text-sm font-medium text-green-900 hover:bg-green-100 hover:text-green-700 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                        <FontAwesomeIcon icon={faArrowRight} size='2xl' className="ml-1" color={'green'} />
+                    </Link>
+                </div>
+                <div className="flex flex-row px-4 font-karla mt-6">
+                    <div className="space-y-2 w-2/3 flex flex-col">
+                        <h3 style={{ fontFamily: 'Karla, cursive' }} className="text-3xl font-medium text-[#65B599]">Thông tin mô tả</h3>
+
+                        <div className='flex flex-col'>
+                            <Label2 name='product_id' title='Loại sản phẩm:' className='p-2' />
+                            <select className='border bg-white rounded-2xl p-2 border-2 focus:border-[#546869] h-[45px] w-1/2 selectpicker'
+                                type="product_id"
+                                id="product_id"
+                                name="product_id"
+                                value={id}
+                                onChange={handleSelectChange}
+                            >
+                                <option value=''>--Chọn loại sản phẩm--</option>
+                                {products?.map((item, index) => (
+                                    <option key={index} value={item.id}>{item.product_name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        {errors?.product_id && (
+                            <LabelError name='product_id' error={errors.product_id?.message} />
+                        )}
+                        <div className='border mb-5 p-3 text-justify border-gray-300 bg-[#F2D7B8] text-[#856404] rounded-md'>
+                            <p className='font-semibold text-lg'>Lưu ý về giá loại sản phẩm</p>
+                            <ul className='list-disc pl-5'>
+                                {product ? (
+                                    <li>Giá thị trường của {product.product_name} hiện nay trong khoảng {Number(product.price_min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}/kg ~
+                                        {Number(product.price_max).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}/kg
+                                    </li>
+                                ) : (
+                                    <li>Chọn một sản phẩm để xem giá</li>
                                 )}
+                            </ul>
+                        </div>
+                        <Component2 name='item_name' title='Tiêu đề sản phẩm:' placeholder='Nhập tiêu đề sản phẩm'
+                            className1='p-2'
+                            register={register("item_name")}
+                            error={errors?.item_name} />
+                        <Component3 name='price' title='Giá sản phẩm:' placeholder='Nhập giá sản phẩm'
+                            className='w-1/2'
+                            className1='p-2'
+                            className2='w-[100%]'
+                            register={register("price")}
+                            unit='VND/kg'
+                            error={errors?.price} />
+                        <Component3 name='type' title='Khối lượng cho mỗi lượt bán:' placeholder='Khối lượng trên 50kg'
+                            className='w-1/2'
+                            className1='p-2'
+                            className2='w-[100%]'
+                            register={register("type")}
+                            unit='kg'
+                            error={errors?.type} />
+                        <div className="flex flex-col mt-2 w-1/2">
+                            <Label2 name={'price_type'} title={'Giá bán:'} className={'p-2'} />
+                            <div className='flex items-center'>
+                                <input
+                                    className="rounded-tl-2xl rounded-bl-2xl px-4 py-3 shadow-sm border-2 bg-white w-[100%]"
+                                    type={'price_type'}
+                                    value={priceType}
+                                    id={'price_type'}
+                                    name={'price_type'}
+                                    readOnly={true}
+                                />
+                                {'VND' && <span className='px-3 py-3 shadow-sm border-4 flex items-center justify-center rounded-tr-2xl rounded-br-2xl bg-gray-200'>VND</span>}
                             </div>
                         </div>
-                    ))}
-                </div>
-
-                {isPopupVisible && (
-                    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white min-w-1xl flex flex-col rounded-xl shadow-lg">
-                            <div className="px-12 py-5">
-                                <h2 className="text-gray-800 text-3xl font-semibold">Đánh giá bài đăng này!</h2>
-                            </div>
-                            <div className="bg-gray-200 w-full flex flex-col items-center">
-                                <div className="flex flex-col items-center py-6 space-y-3">
-                                    <span className="text-lg text-gray-800">Chất lượng chỗ ở thế nào!</span>
-                                    <div className="flex space-x-3">
-                                        {/* Bạn có thể thay đổi onClick cho mỗi biểu tượng sao để gọi handleRatingClick với số sao tương ứng */}
-                                        <FaStar className="cursor-pointer" size={28} color={rating >= 1 ? '#fbbf24' : 'gray'} onClick={() => handleRatingClick(1)} />
-                                        <FaStar className="cursor-pointer" size={28} color={rating >= 2 ? '#fbbf24' : 'gray'} onClick={() => handleRatingClick(2)} />
-                                        <FaStar className="cursor-pointer" size={28} color={rating >= 3 ? '#fbbf24' : 'gray'} onClick={() => handleRatingClick(3)} />
-                                        <FaStar className="cursor-pointer" size={28} color={rating >= 4 ? '#fbbf24' : 'gray'} onClick={() => handleRatingClick(4)} />
-                                        <FaStar className="cursor-pointer" size={28} color={rating >= 5 ? '#fbbf24' : 'gray'} onClick={() => handleRatingClick(5)} />
-                                    </div>
-                                </div>
-                                <div className="w-3/4 flex flex-col">
-                                    <textarea
-                                        className="p-4 text-gray-500 h-[120px] rounded-xl resize-none font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
-                                        name="body"
-                                        placeholder="Nhập bình luận"
-                                        required
-                                        value={commentContent}
-                                        onChange={(e) => setCommentContent(e.target.value)}
-                                    ></textarea>
-
-                                    <input
-                                        type="submit"
-                                        className="py-3 my-8  bg-[#0E2E50] rounded-xl text-white"
-                                        value="Đăng đánh giá"
-                                    />
-
-                                </div>
-                            </div>
-                            <div className="h-14 flex items-center justify-center">
-                                <div className="text-gray-600" onClick={handleClosePopup}>Đóng</div>
-                            </div>
+                        <Component3 name='total' title='Khối lượng sản phẩm hiện có: ' placeholder='Nhập khối lượng'
+                            className='w-1/2'
+                            className1='p-2'
+                            className2='w-[100%]'
+                            register={register("total")}
+                            unit='kg'
+                            error={errors?.total} />
+                    </div>
+                    <div className="space-y-2 w-1/2 flex flex-col justify-center items-center ">
+                        <div className='w-[500px] h-[500px] rounded-md outline outline-1 outline-offset-2 outline-[#1E40AF] flex items-center justify-center'>
+                            {isLoading
+                                ?
+                                <Loading />
+                                : <img src={image ? image : camera} alt="selected" className="w-[490px] h-[490px]" />}
+                        </div>
+                        <label style={{ fontFamily: 'Lora, cursive' }} className="flex items-center justify-center w-1/4 border border-blue-800 me-2 mt-1.5 inline-flex items-center rounded bg-white px-2.5 py-0.5 text-sl font-medium text-blue-800" >
+                            <FontAwesomeIcon icon={faImage} size="2xl" className="mr-3" color={'gray'} /> Tải ảnh lên
+                            <input type="file" id='file' hidden onChange={handleFileChange} />
+                        </label>
+                        <div className='border mt-8 p-3 text-justify border-gray-300 bg-[#ffeeba] text-[#856404] rounded-md'>
+                            <p className='font-semibold text-lg'>Lưu ý khi đăng sản phẩm</p>
+                            <ul className='list-disc pl-5'>
+                                <li>Nội dung phải viết bằng tiếng Việt có dấu</li>
+                                <li>Hình ảnh chân thực và đúng loại sản phẩm đang bán.</li>
+                                <li>Cần tăng độ tin cậy trong phần mô tả bạn nên viết chi tiết về sản phẩm của mình.</li>
+                                <li>Giá cả sản phẩm bạn bán nên theo giá thị trường hiện tại.</li>
+                            </ul>
                         </div>
                     </div>
-                )}
-                <button
-                    type="button"
-                    className="px-2.5 py-1.5 ml-[685px] rounded-md cursor-pointer text-white bg-[#0E2E50] mt-6"
-                    onClick={handleRatingClick}
-                >
-                    Viết đánh giá
-                </button>
-
+                </div>
+                <div className='flex flex-col'>
+                    <Label2 name={'describe'} title={'Nội dung mô tả:'} className={'p-5 mt-5'} />
+                    <div className="flex items-center justify-center">
+                        <textarea
+                            id="describe"
+                            cols="30" rows="10"
+                            className='w-[95%] px-8 py-6 shadow-sm rounded-2xl border-2 focus:outline-none focus:border-[#546869] bg-white'
+                            name="describe"
+                            {...register("describe")}
+                        ></textarea>
+                    </div>
+                    {errors?.describe && (
+                        <LabelError name='describe' error={errors.describe?.message} />
+                    )}
+                </div>
+                <div className="flex justify-end mt-6 text-center mb-5">
+                    <button className="w-[100px] inline-flex justify-center rounded-lg border border-[#FFA800] bg-white px-3 py-3 text-2sm font-bold text-[#FFA800] hover:bg-orange-100 hover:text-[#FFA800] focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 mr-8" type="button" onClick={handleCancel}>
+                        Hủy
+                    </button>
+                    <button className="w-[150px] inline-flex justify-center rounded-lg border border-blue-200 bg-white px-3 py-3 text-2sm font-bold text-blue-900 hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 mr-8" type="submit">
+                        Tạo sản phẩm
+                    </button>
+                </div>
             </form>
-
-        </div>
+        </>
     );
 };
 
-export default Comment;
+export default CreateItem;

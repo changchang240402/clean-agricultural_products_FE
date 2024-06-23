@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faFilterCircleXmark, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 import productService from '../../services/ProductService';
 import userService from '../../services/UserService';
+import UpdateProduct from '../Product/UpdateProduct';
 const ProductList = ({ role }) => {
     const { productList } = productService();
     const { upload } = userService();
@@ -87,6 +88,19 @@ const ProductList = ({ role }) => {
         });
         setIsSearchClicked(true);
     };
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleOpenModal = (product) => {
+        setSelectedProduct(product);
+        setIsModalOpen(true);
+    };
+
+    console.log('trang', selectedProduct);
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedProduct(null);
+    };
+
     return (
         <div className="m-6">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between mt-12">
@@ -169,9 +183,14 @@ const ProductList = ({ role }) => {
                                 {role === 0 && (
                                     <div className="w-[5%] flex flex-wrap lg:flex-nowrap">
                                         <dl className="w-1/5 sm:w-1/4 lg:w-1/5">
-                                            <button className="mt-1.5 text-base font-semibold text-gray-900">
+                                            <button onClick={() => handleOpenModal(data)} className="mt-1.5 text-base font-semibold text-gray-900">
                                                 <FontAwesomeIcon icon={faPenToSquare} color={'green'} size='2x' />
                                             </button>
+                                            <UpdateProduct
+                                                isOpen={isModalOpen}
+                                                onClose={handleCloseModal}
+                                                product={selectedProduct}
+                                            />
                                         </dl>
                                     </div>
                                 )}
