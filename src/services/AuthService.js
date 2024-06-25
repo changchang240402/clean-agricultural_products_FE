@@ -90,7 +90,7 @@ function AuthService() {
                 localStorage.setItem("accessToken", response.data.access_token);
                 localStorage.setItem("refreshToken", response.data.refresh_token);
                 localStorage.setItem("userName", response.data.user.name);
-
+                localStorage.setItem("userRole", response.data.user.role);
                 const role = response.data.user.role;
                 switch (role) {
                     case ROLE.admin:

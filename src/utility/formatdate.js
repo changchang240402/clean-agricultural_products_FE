@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
 function formatDateString(dateString) {
@@ -29,9 +29,24 @@ function formatDateToTime(date) {
     return `${formattedHours}:${formattedMinutes} ${ampm}`;
 }
 
+function formatDateExpected(dateString, day) {
+    const date = new Date(dateString);
+    const newDate = addDays(date, day);
+    const formattedDate = format(newDate, "dd-MM-yyyy", { locale: vi });
+    return formattedDate;
+}
+
+function formatDateHourString(dateString) {
+    const date = new Date(dateString);
+    const formattedDate = format(date, "dd-MM-yyyy, HH:mm", { locale: vi });
+    return formattedDate;
+}
+
 export {
     formatDate,
     formatDateString,
     formatDateCustom,
-    formatDateToTime
+    formatDateToTime,
+    formatDateExpected,
+    formatDateHourString
 };

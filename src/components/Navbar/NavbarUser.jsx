@@ -11,25 +11,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faSeedling, faShop, faBasketShopping } from '@fortawesome/free-solid-svg-icons';
 import UserPopup from './UserPopup';
 import NotificationList from '../Notification/NotificationList';
-// import useAuth from "../hooks/useAuth";
-// import { FaUser } from "react-icons/fa";
-// import CustomPopup from "./CustomPopup";
 import Logo from "../Logo/Logo";
 import '../../index.css'
+import userService from '../../services/UserService';
 
 const NavbarUser = () => {
-    // const dispatch = useAppDispatch();
-    // const cartCount = useAppSelector(
-    //     (state) => state.cartReducer.cartItems.length
-    // );
-    const cartCount = 100;
-    // const username = useAppSelector((state) => state.authReducer.username);
-    // const { requireAuth } = useAuth();
+    const { totalOrder } = userService();
+    const [order, setOrder] = useState(null);
 
-    // const showCart = () => {
-    //     requireAuth(() => dispatch(setCartState(true)));
-    // };
+    useEffect(() => {
+        const fetchTotal = async () => {
+            const total = await totalOrder();
+            setOrder(total);
+        }
+        fetchTotal();
+        // const socket = new WebSocket('ws://localhost:3000');
 
+        // socket.onmessage = (event) => {
+        //     const updatedOrder = JSON.parse(event.data);
+        //     setOrder(updatedOrder.totalOrder);
+        // };
+
+        // socket.onopen = () => {
+        //     console.log('WebSocket connection established');
+        // };
+
+        // socket.onclose = () => {
+        //     console.log('WebSocket connection closed');
+        // };
+
+        // return () => {
+        //     socket.close(); // Cleanup WebSocket connection on component unmount
+        // };
+    }, []);
     return (
         <div className="bg-white top-0 sticky z-10 shadow-lg font-karla">
             <div className="container mx-auto px-4">
@@ -37,16 +51,6 @@ const NavbarUser = () => {
                     <div className="flex justify-start my-5 items-start">
                         <Logo size='40' className='text-4xl' />
                     </div>
-                    {/* <div className="lg:flex hidden w-full max-w-[500px]">
-                        <input
-                            type="text"
-                            placeholder="Search for a product..."
-                            className="border-2 border-blue-500 px-6 py-2 w-full"
-                        />
-                        <div className="bg-blue-500 text-white text-[26px] grid place-items-center px-4">
-                            <BsSearch />
-                        </div>
-                    </div> */}
                     <div className="flex gap-4 md:gap-8 items-center">
                         <Link
                             to="/user/"
@@ -81,8 +85,8 @@ const NavbarUser = () => {
                             data-test="main-products"
                             style={{ fontFamily: 'Lobster, cursive' }}
                         >
-                            <IconButton aria-label={(cartCount)}>
-                                <Badge badgeContent={cartCount} color="error">
+                            <IconButton aria-label={(order)}>
+                                <Badge badgeContent={order} color="error">
                                     <FontAwesomeIcon icon={faBasketShopping} className="mr-1 mt-1" color="#546869" />
                                 </Badge>
                             </IconButton>

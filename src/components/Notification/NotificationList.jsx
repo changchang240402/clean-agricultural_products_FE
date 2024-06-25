@@ -1,29 +1,52 @@
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faCircle } from '@fortawesome/free-regular-svg-icons';
+import { faBell, faCircle, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import userService from '../../services/UserService';
 import { Link } from "react-router-dom";
 import React, { useState, useRef, useEffect } from 'react'
 import { Virtuoso } from 'react-virtuoso'
+import { formatDateHourString } from "../../utility/formatdate"
 const NotificationList = () => {
     const [isVisible, setVisible] = useState(false);
-    const handlePopup = () => {
+    const { notifications, deleteNotifi, updateNotifi } = userService();
+    const [notifi, setNotifi] = useState({
+        detail: [],
+        count: 0
+    });
+    const handlePopup = async () => {
         setVisible((v) => !v);
+        await updateNotifi();
     };
     const hidePopup = () => {
         setVisible(false);
+        fetchData();
     };
-    const notifications = [
-        { id: 1, content: 'Notification content 1', time: '10:00 AM', read: false },
-        { id: 2, content: 'Notification content 2', time: '11:00 AM', read: true },
-    ];
-    const count = 10
+    useEffect(() => {
+        fetchData();
+    }, []);
+    const fetchData = async () => {
+        try {
+            const data = await notifications();
+            setNotifi(prevFilter => ({ ...prevFilter, detail: data.data, count: data.count }));
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    const deleteNotification = async (notifiId) => {
+        try {
+            await deleteNotifi.geId(notifiId);
+        } catch (error) {
+            console.error('Error deleting order:', error);
+        }
+        fetchData();
+    };
     return (
         <div className="flex flex-row relative" >
             <div className="flex Notification" onClick={handlePopup}>
-                <IconButton aria-label={(count)}>
-                    <Badge badgeContent={count} color="error">
-                        <FontAwesomeIcon icon={faBell} color="#546869"/>
+                <IconButton aria-label={(notifi.count)}>
+                    <Badge badgeContent={notifi.count} color="error">
+                        <FontAwesomeIcon icon={faBell} color="#546869" />
                     </Badge>
                 </IconButton>
             </div>
@@ -35,31 +58,36 @@ const NotificationList = () => {
                                 <p className="text-xl font-poppins font-bold">Notifications</p>
                             </div>
                             <Virtuoso className="flex flex-col w-full"
-                                data={notifications}
+                                data={notifi.detail}
                                 style={{ height: '300px' }}
                                 itemContent={(index, item) => {
                                     return (
-                                        <Link to="/user/profile" onClick={hidePopup}
-                                            className="flex flex-row my-1 cursor-pointer p-2 hover:bg-slate-300 justify-start items-center rounded-xl "
+                                        <div
+                                            className={`${item.read === 0 ? "bg-red-100 hover:bg-red-200" : "bg-white hover:bg-gray-100"} flex flex-row my-1 cursor-pointer p-2 justify-start items-center rounded-xl border`}
                                             key={item.id}
                                             value={item.id}
                                         >
-                                            <div className="flex flex-col mx-4">
-                                                <p className="max-w-52">{item.content}</p>
-                                                <p className="mt-2 text-xs font-bold text-blue-500">{item.time}</p>
+                                            <div className="flex flex-col mx-3 w-[100%]">
+                                                <Link to={item.link} onClick={hidePopup}>{item.title}</Link>
+                                                <div className='flex flex-row justify-between items-center w-[100%]'>
+                                                    <p className="mt-2 text-xs font-bold text-blue-500 w-[100%]">{formatDateHourString(item.created_at)}</p>
+                                                    {item.notification_type_id === 2 ? ("") : (
+                                                        <button type="button" className="text-gray-600 hover:text-blue-800 mb-3" onClick={() => deleteNotification(item.id)}>
+                                                            <FontAwesomeIcon icon={faTrashCan} color={'red'} size='xl' className='h-[20px]' />
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
-                                            {/* <div className="flex flex-1 justify-end items-end">
-                                                <FontAwesomeIcon icon={faCircle} className="text-blue-500" />
-                                            </div> */}
-                                        </Link>
+                                        </div>
                                     )
                                 }}
                             />
                         </div>
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
 
     );
 }

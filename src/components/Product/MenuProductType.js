@@ -3,7 +3,8 @@ import raucu from '../../assets/vegetables.png'
 import traicay from '../../assets/traicay.png'
 import tpcn from '../../assets/caycongnghiep.png'
 import khac from '../../assets/khac.png'
-
+import { faChartPie, faUser, faTruckFast, faShop, faWheatAwn, faCube, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const MenuProductType = [
     {
         id: 1,
@@ -102,7 +103,184 @@ const provinces = [
     "Yên Bái",
 ];
 
+const MenuStatusOrder = [
+    {
+        id: 1,
+        status: 2,
+        title: "Đang chuẩn bị",
+    },
+    {
+        id: 2,
+        status: 3,
+        title: "Đang vận chuyển",
+    },
+    {
+        id: 3,
+        status: 4,
+        title: "Hoàn thành",
+    },
+    {
+        id: 4,
+        status: 5,
+        title: "Trả hàng",
+    },
+    {
+        id: 5,
+        status: 6,
+        title: "Đã hủy",
+    },
+];
+
+const MenuStatusTrader = [
+    {
+        id: 1,
+        status: 0,
+        title: "Xác nhận",
+    },
+    {
+        id: 2,
+        status: 1,
+        title: "Hoạt động",
+    },
+    {
+        id: 3,
+        status: 2,
+        title: "Lệnh cấm",
+    },
+    {
+        id: 4,
+        status: 3,
+        title: "Đang chuyển hàng",
+    },
+];
+
+const MenuStatusItem = [
+    {
+        id: 1,
+        status: 0,
+        title: "Hoạt động",
+    },
+    {
+        id: 2,
+        status: 1,
+        title: "Lệnh cấm",
+    },
+    {
+        id: 3,
+        status: 2,
+        title: "Xác nhận",
+    },
+    {
+        id: 4,
+        status: 3,
+        title: "Ẩn",
+    },
+];
+
+const MenuStatusUser = [
+    {
+        id: 1,
+        title: "Hoạt động",
+    },
+    {
+        id: 2,
+        title: "Lệnh cấm",
+    },
+];
+const MenuOrder = [
+    {
+        id: 1,
+        title: "Tháng này",
+    },
+    {
+        id: 2,
+        title: "3 tháng qua",
+    },
+    {
+        id: 3,
+        title: "6 tháng qua",
+
+    },
+    {
+        id: 4,
+        title: "Năm nay",
+    },
+];
+const MenuAdmin = [
+    {
+        title: "Thống kê",
+        icon: faChartPie,
+        url: "",
+    },
+    {
+        title: "Khách hàng",
+        icon: faUser,
+        url: "users",
+    },
+    {
+        title: "Cửa hàng",
+        icon: faShop,
+        url: "seller",
+    },
+    {
+        title: "Tài xế",
+        icon: faTruckFast,
+        url: "trader",
+    },
+    {
+        title: "Sản phẩm",
+        icon: faWheatAwn,
+        url: "product",
+    },
+    {
+        title: "Mặt hàng",
+        icon: faCube,
+        url: "item",
+    },
+];
+const MenuSeller = [
+    {
+        title: "Thống kê",
+        icon: faChartPie,
+        url: "",
+    },
+    {
+        title: "Đơn hàng",
+        icon: faCartShopping,
+        url: "order",
+    },
+    {
+        title: "Sản phẩm",
+        icon: faWheatAwn,
+        url: "product",
+    },
+    {
+        title: "Mặt hàng",
+        icon: faCube,
+        url: "item",
+    },
+];
+const MenuTrader = [
+    {
+        title: "Thống kê",
+        icon: faChartPie,
+        url: "",
+    },
+    {
+        title: "Đơn hàng",
+        icon: faCartShopping,
+        url: "order",
+    },
+];
 export {
     MenuProductType,
     provinces,
+    MenuOrder,
+    MenuStatusOrder,
+    MenuAdmin,
+    MenuSeller,
+    MenuTrader,
+    MenuStatusTrader,
+    MenuStatusUser,
+    MenuStatusItem
 };

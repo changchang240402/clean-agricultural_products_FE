@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Route, Routes } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -9,10 +9,24 @@ import Shop from '../../components/User/Shop'
 import Profile from "../../components/User/Profile";
 import Cart from "../../components/User/Cart";
 import Footer from "../../components/Footer";
+import Item from "../../components/Product/ItemDetail";
+import ShopDetail from "../../components/User/ShopDetail";
+import OrderTrackingUser from "../../components/OrderDetail/OrderTrackingUser";
+import VnPayReturn from "../../components/VnPay/VnPayReturn";
+import PaymentComponent from "../../components/VnPay/PaymentComponent";
+import { useNavigate } from 'react-router-dom';
+// import Checkout from "../../components/User/Stripe/Stripe";
 const UserNavigation = () => {
+    const navigate = useNavigate();
+    const accessToken = localStorage.getItem('userRole');
+    useEffect(() => {
+        if (accessToken !== "1") {
+            navigate('/');
+        }
+    }, [accessToken, navigate]);
     return (
         <div className="flex w-full h-screen">
-            <div className="flex bg-[#F9FAFB] flex-col flex-1">
+            <div className="flex bg-white flex-col flex-1">
                 <NavbarUser />
                 <Suspense fallback={<FontAwesomeIcon icon={faSpinner} />}>
                     <Routes>
@@ -21,8 +35,12 @@ const UserNavigation = () => {
                         <Route path="product" element={<Product />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="cart" element={<Cart />} />
-                        {/* <Route path="ads" element={<Ads />} />
-                        <Route path="reports" element={<CampaignDetail />} /> */}
+                        <Route path="item/:id" element={<Item />} />
+                        <Route path="shop/:id" element={<ShopDetail />} />
+                        <Route path="tracking/:id" element={<OrderTrackingUser />} />
+                        <Route path="/vnpay_return" element={<VnPayReturn />} />
+                        {/* <Route path="/payment" element={<PaymentComponent />} />
+                        <Route path="/pay" element={<Checkout />} /> */}
                     </Routes>
                 </Suspense>
                 <Footer />

@@ -42,7 +42,7 @@ const schema = yup.object({
     payload: yup.number()
         .typeError('Giá trị không hợp lệ')
         .required('Không được để trống')
-        .min(100, 'Khối lượng hàng hóa tối đa phải chứa trên 100 kg')
+        .min(100, 'Khối lượng hàng hóa tối thiểu phải chứa trên 100 kg')
         .max(10000, 'Khối lượng hàng hóa tối đa không được quá 10000 kg'),
 })
 
@@ -91,7 +91,7 @@ const TraderRegistrationForm = ({ userData, setUserData, handleRegister, prevSte
                 error={errors?.name} />
             <div className="flex flex-row justify-start">
                 <div className="flex flex-col justify-end w-1/2">
-                    <Label name='birthday1' title='Ngày sinh' className='mt-1' />
+                    <Label name='birthday1' title='Ngày sinh' />
                     <div className='flex flex-row items-center px-4 py-3 shadow-sm rounded-2xl border-2 focus:outline-none focus:border-[#546869] bg-white w-[200px] h-[45px]'>
                         <DatePicker
                             selected={birthday1}
@@ -137,7 +137,7 @@ const TraderRegistrationForm = ({ userData, setUserData, handleRegister, prevSte
             <Component name='payload' title='Khối lượng hàng hóa tối đa xe bạn chở được (đơn vị: kg)' placeholder='1000'
                 register={register("payload")}
                 error={errors?.payload} />
-            <div className="flex justify-between mt-10 text-center">
+            <div className="flex justify-between mt-6 text-center">
                 <button className="bg-[#65B599] rounded-3xl px-6 py-3 font-bold text-white" onClick={handleBack}>
                     Quay lại
                     <FontAwesomeIcon icon={faArrowLeft} className="ml-3" />

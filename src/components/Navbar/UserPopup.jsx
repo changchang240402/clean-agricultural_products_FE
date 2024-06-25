@@ -52,7 +52,7 @@ const UserPopup = () => {
                                     <FontAwesomeIcon icon={faAddressCard} color='#546869' />
                                 </td>
                                 <td style={{ fontFamily: 'Karla, cursive' }} className="hover:underline cursor-pointer text-lg pl-2 text-[#546869]">
-                                    <Link to="/user/profile" onClick={hidePopup}>
+                                    <Link to={"profile"} onClick={hidePopup}>
                                         Thông tin cá nhân
                                     </Link>
                                 </td>

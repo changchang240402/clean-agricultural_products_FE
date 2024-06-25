@@ -8,7 +8,6 @@ const TrendingProjects = () => {
     useEffect(() => {
         fetchData();
     }, []);
-    console.log(itemData);
     const fetchData = async () => {
         try {
             const data = await topItem();
@@ -29,7 +28,7 @@ const TrendingProjects = () => {
                 {itemData?.map((product, index) => (
                     <ProductCard
                         key={index}
-                        id={product.id}
+                        product_id={product.id}
                         item_name={product.item_name}
                         product_name={product.product_name}
                         price={product.price}
