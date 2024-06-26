@@ -4,9 +4,11 @@ import Logo from '../Logo/Logo';
 import VnPay from '../../services/VnPay';
 import { formatDateExpected, formatDateString, formatDateHourString } from "../../utility/formatdate"
 import AuthService from '../../services/AuthService';
+import userService from '../../services/UserService';
 import { Link } from "react-router-dom";
 const VnPayReturn = () => {
     const { getUserProfile } = AuthService();
+    const { totalOrder } = userService();
     const [user, setUser] = useState({
         detail: {}
     });
@@ -34,6 +36,8 @@ const VnPayReturn = () => {
                 const queryString = query.toString();
                 const data = await fetchVnPayReturn(queryString);
                 setResult(prevFilter => ({ ...prevFilter, detail: data.data }));
+                const total = await totalOrder();
+                window.dispatchEvent(new CustomEvent('cartUpdated', { detail: total }));
                 // navigate({ search: '' }, { replace: true });
             } catch (error) {
                 console.error('Error fetching VNPay return:', error);

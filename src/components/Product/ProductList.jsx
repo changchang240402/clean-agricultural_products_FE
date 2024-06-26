@@ -52,6 +52,16 @@ const ProductList = ({ role }) => {
             setIsSearchClicked(false);
         }
     }, [filter, isSearchClicked]);
+    useEffect(() => {
+        const handleProductUpdate = () => {
+            fetchData();
+        };
+
+        window.addEventListener('productUpdated', handleProductUpdate);
+        return () => {
+            window.removeEventListener('productUpdated', handleProductUpdate);
+        };
+    }, []);
     const fetchData = async () => {
         try {
             const data = await productList.getProductData(filter.currentPage, filter.id, filter.sort);

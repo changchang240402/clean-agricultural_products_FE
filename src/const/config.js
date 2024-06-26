@@ -1,4 +1,4 @@
-export const AppBaseUrl = import.meta.env.REACT_APP_API ?? 'http://localhost:8000/api';
+export const AppBaseUrl = import.meta.env.REACT_APP_API ?? 'https://clean-agriculturalproductsbe-production.up.railway.app/api';
 export const OPEN_VIEW_POPUP = 'OPEN_VIEW_POPUP';
 export const CLOSE_VIEW_POPUP = 'CLOSE_VIEW_POPUP';
 export const OPEN_EDIT_POPUP = 'OPEN_EDIT_POPUP';

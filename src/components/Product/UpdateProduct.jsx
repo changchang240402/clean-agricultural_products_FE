@@ -34,6 +34,7 @@ const UpdateProduct = ({ isOpen, onClose, product }) => {
         const { price_min, price_max } = data;
         try {
             await updateProduct(product.id, product.product_name, price_min, price_max);
+            window.dispatchEvent(new CustomEvent('productUpdated', { detail: { productId: product.id, price_min, price_max } }));
         } catch (error) {
             alert("Đã xảy ra lỗi không mong muốn.");
             console.error("Error submitting form:", error);

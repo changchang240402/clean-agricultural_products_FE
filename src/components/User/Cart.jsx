@@ -5,8 +5,6 @@ import OrderDetailCart from '../OrderDetail/OrderDetailCart';
 import orderDetailService from '../../services/OrderDetailService';
 import VnPay from '../../services/VnPay';
 import userService from '../../services/UserService';
-// import { useLocation, useNavigate } from 'react-router-dom';
-// import { Toastify } from "../../toastify/Toastify";
 const Cart = () => {
     const { totalOrder } = userService();
     const [order, setOrder] = useState(null);
@@ -17,24 +15,6 @@ const Cart = () => {
             setOrder(total);
         }
         fetchTotal();
-        // const socket = new WebSocket('ws://localhost:3000');
-
-        // socket.onmessage = (event) => {
-        //     const updatedOrder = JSON.parse(event.data);
-        //     setOrder(updatedOrder.totalOrder);
-        // };
-
-        // socket.onopen = () => {
-        //     console.log('WebSocket connection established');
-        // };
-
-        // socket.onclose = () => {
-        //     console.log('WebSocket connection closed');
-        // };
-
-        // return () => {
-        //     socket.close(); // Cleanup WebSocket connection on component unmount
-        // };
     }, []);
     const { getOrderByUser, deleteOrderByUser } = orderDetailService();
     const [orders, setOrders] = useState([]);
@@ -94,7 +74,7 @@ const Cart = () => {
         );
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         setOrders((prevOrders) =>
             prevOrders.map((order) => ({
                 ...order,
@@ -103,12 +83,16 @@ const Cart = () => {
                 shipping_money: order.order_details.reduce((acc, detail) => acc + detail.item.type * detail.count, 0) * order.cost
             }))
         );
+        const total = await totalOrder();
+        window.dispatchEvent(new CustomEvent('cartUpdated', { detail: total }));
     };
 
     const deleteOrder = async (orderId) => {
         try {
             await deleteOrderByUser.getOrderData(orderId);
             setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
+            const total = await totalOrder();
+            window.dispatchEvent(new CustomEvent('cartUpdated', { detail: total }));
         } catch (error) {
             console.error('Error deleting order:', error);
         }
@@ -133,9 +117,6 @@ const Cart = () => {
                                             <button type="button" className="text-gray-600 hover:text-blue-800 mb-3" onClick={() => deleteOrder(order.id)}>
                                                 <FontAwesomeIcon icon={faTrashCan} color={'red'} size='xl' className='h-[20px]' />
                                             </button>
-                                            {/* <div>
-                                                <FontAwesomeIcon icon={faTrashCan} color={'red'} size='xl' className='h-[20px]' />
-                                            </div> */}
                                         </div>
                                         <div className="flex flex-col w-[100%]">
                                             {order.order_details.map((order_detail, index) => (

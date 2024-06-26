@@ -1,9 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-// import { AiOutlineShoppingCart } from "react-icons/ai";
-// import { BsSearch } from "react-icons/bs";
-// import { useAppSelector, useAppDispatch } from "../redux/hooks";
-// import { setCartState } from "../redux/features/cartSlice";
-// import { updateModal } from "../redux/features/authSlice";
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import { Link } from "react-router-dom";
@@ -25,24 +20,15 @@ const NavbarUser = () => {
             setOrder(total);
         }
         fetchTotal();
-        // const socket = new WebSocket('ws://localhost:3000');
-
-        // socket.onmessage = (event) => {
-        //     const updatedOrder = JSON.parse(event.data);
-        //     setOrder(updatedOrder.totalOrder);
-        // };
-
-        // socket.onopen = () => {
-        //     console.log('WebSocket connection established');
-        // };
-
-        // socket.onclose = () => {
-        //     console.log('WebSocket connection closed');
-        // };
-
-        // return () => {
-        //     socket.close(); // Cleanup WebSocket connection on component unmount
-        // };
+    }, []);
+    useEffect(() => {
+        const handleCartUpdate = (event) => {
+            setOrder(event.detail);
+        };
+        window.addEventListener('cartUpdated', handleCartUpdate);
+        return () => {
+            window.removeEventListener('cartUpdated', handleCartUpdate);
+        };
     }, []);
     return (
         <div className="bg-white top-0 sticky z-10 shadow-lg font-karla">
