@@ -210,7 +210,7 @@ const OrderTrackingUser = () => {
                                         {orderData.role === 3 && (
                                             <div className="box group ml-2">
                                                 <p className="font-normal text-base leading-7 text-gray-500 transition-all duration-500 group-hover:text-gray-700">Số điện thoại</p>
-                                                <h6 className="font-semibold font-manrope text-xl leading-9 text-[#B24101]">{orderData.detail.seller.phone}</h6>
+                                                <a href={`https://zalo.me/${orderData.detail.seller.phone}`} className="font-semibold font-manrope text-xl leading-9 text-[#B24101]">{orderData.detail.seller.phone}</a>
                                             </div>
                                         )}
                                         <div className="box group ml-2">
@@ -243,7 +243,7 @@ const OrderTrackingUser = () => {
                                         </div>
                                         <div className="box group ml-2">
                                             <p className="font-normal text-base leading-7 text-gray-500 transition-all duration-500 group-hover:text-gray-700">Số điện thoại</p>
-                                            <h6 className="font-semibold font-manrope text-xl leading-9 text-[#B24101]">{orderData.detail.user.phone}</h6>
+                                            <a href={`https://zalo.me/${orderData.detail.user.phone}`} className="font-semibold font-manrope text-xl leading-9 text-[#B24101]">{orderData.detail.user.phone}</a>
                                         </div>
                                         <div className="box group ml-2">
                                             <p className="font-normal text-base leading-7 text-gray-500 transition-all duration-500 group-hover:text-gray-700">Địa chỉ</p>
@@ -264,7 +264,7 @@ const OrderTrackingUser = () => {
                                             <div>
                                                 <div className="box group ml-2">
                                                     <p className="font-normal text-base leading-7 text-gray-500 transition-all duration-500 group-hover:text-gray-700">Số điện thoại</p>
-                                                    <h6 className="font-semibold font-manrope text-xl leading-9 text-[#B24101]">{orderData.detail.trader.phone}</h6>
+                                                    <a href={`https://zalo.me/${orderData.detail.trader.phone}`} className="font-semibold font-manrope text-xl leading-9 text-[#B24101]">{orderData.detail.trader.phone}</a>
                                                 </div>
                                                 <div className="box group ml-2">
                                                     <p className="font-normal text-base leading-7 text-gray-500 transition-all duration-500 group-hover:text-gray-700">Địa chỉ</p>

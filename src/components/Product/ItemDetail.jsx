@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWarehouse, faCartShopping, faPlus, faSeedling, faTags, faMoneyBill1Wave, faMinus } from '@fortawesome/free-solid-svg-icons'
 import Review from '../Review/Review';
 import itemService from '../../services/ItemService';
+import userService from '../../services/UserService';
 import thank from '../../assets/thankyou.png'
 import orderDetailService from '../../services/OrderDetailService';
 const Item = () => {
@@ -14,6 +15,7 @@ const Item = () => {
     const decodedId = decodeId(id);
     const [qty, setQty] = useState(1);
     const { itemDetail } = itemService();
+    const { totalOrder } = userService();
     const [item, setItem] = useState({
         detail: {}
     });
@@ -40,7 +42,6 @@ const Item = () => {
         } else {
             setShowStats(true);
         }
-        // fetchData();
     }, [rating]);
     const increaseQty = () => {
         setQty((prevQty) => {
@@ -61,6 +62,8 @@ const Item = () => {
     const handleAddToCart = async () => {
         try {
             await createOrderDetail.getOrderDetailData(item.detail.id, item.detail.seller_id, qty);
+            const total = await totalOrder();
+            window.dispatchEvent(new CustomEvent('cartUpdated', { detail: total }));
         } catch (error) {
             console.error('Error adding to cart:', error);
         }

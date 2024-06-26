@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Profile from '../../components/User/Profile'
-import Navbar from '../../components/Navbar/Navbar'
+import NavbarAdmin from '../../components/Navbar/NavbarAdmin'
 import Footer from "../../components/Footer";
 import { MenuAdmin } from "../../components/Product/MenuProductType";
 import SideBar from "../../components/SideBar";
@@ -27,7 +27,7 @@ const AdminNavigation = () => {
         <div className="flex w-full h-screen">
             <SideBar MenuItems={MenuAdmin} />
             <div className="flex bg-[#F9FAFB] flex-col flex-1">
-                <Navbar />
+                <NavbarAdmin />
                 <Suspense fallback={<FontAwesomeIcon icon={faSpinner} />}>
                     <Routes>
                         <Route path="profile" element={<Profile />} />
